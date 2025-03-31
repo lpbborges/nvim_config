@@ -32,6 +32,14 @@ return {
     local lspconfig = require "lspconfig"
     lspconfig.lua_ls.setup { capabilities = capabilities }
     lspconfig.ts_ls.setup { capabilities = capabilities }
+    lspconfig.biome.setup {
+      -- Optional custom configuration
+      capabilities = capabilities,
+      cmd = { "biome", "lsp-proxy" },
+      root_dir = lspconfig.util.root_pattern('biome.json', 'package.json'),
+      single_file_support = false,
+    }
+    lspconfig.tailwindcss.setup { capabilities = capabilities }
     vim.diagnostic.config({
       signs = {
         text = {
