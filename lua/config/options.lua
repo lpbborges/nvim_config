@@ -37,12 +37,12 @@ set.termguicolors = true
 set.timeoutlen = 300
 set.title = true
 set.titlelen = 0
-set.undodir = os.getenv("HOME") .. "/.vim/undodir"
+set.undodir = os.getenv "HOME" .. "/.vim/undodir"
 set.undofile = true
 set.updatetime = 50
 set.whichwrap = "bs<>[]hl"
 set.wrap = false
 set.writebackup = false
-set.formatoptions:remove({ "c", "r", "o" })
+set.formatoptions:remove { "c", "r", "o" }
 set.isfname:append "@-@"
 set.shortmess:append "c"

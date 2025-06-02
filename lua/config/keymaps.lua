@@ -22,22 +22,27 @@ keymap("n", "Q", "<nop>")
 keymap("n", "<C-n>", "<cmd>cnext<CR>", opts)
 keymap("n", "<C-p>", "<cmd>cprev<CR>", opts)
 
+keymap({ "n", "x" }, "<leader>f", function()
+  require("conform").format({ async = true })
+end, opts)
 
-keymap({ "n", "x" }, "<leader>f", function() vim.lsp.buf.format({ async = true }) end, opts)
+keymap("n", "<leader>Ao", ":AiderOpen<CR>", { noremap = true, silent = true })
+keymap("n", "<leader>Am", ":AiderAddModifiedFiles<CR>", { noremap = true, silent = true })
 
 -- Block to use arrow keys
-keymap('n', '<left>', '<cmd>echo "Use h to move!!"<CR>', opts)
-keymap('n', '<right>', '<cmd>echo "Use l to move!!"<CR>', opts)
-keymap('n', '<up>', '<cmd>echo "Use k to move!!"<CR>', opts)
-keymap('n', '<down>', '<cmd>echo "Use j to move!!"<CR>', opts)
+keymap("n", "<left>", '<cmd>echo "Use h to move!!"<CR>', opts)
+keymap("n", "<right>", '<cmd>echo "Use l to move!!"<CR>', opts)
+keymap("n", "<up>", '<cmd>echo "Use k to move!!"<CR>', opts)
+keymap("n", "<down>", '<cmd>echo "Use j to move!!"<CR>', opts)
 
-keymap("n", "<leader><leader>x", function() vim.cmd("so") end)
+keymap("n", "<leader><leader>x", function()
+  vim.cmd("so")
+end)
 
 -- next greatest remap ever : asbjornHaland
 keymap({ "n", "v" }, "<leader>y", [["+y]])
 keymap("n", "<leader>Y", [["+Y]])
 keymap({ "n", "v" }, "<leader>d", [["_d]])
-
 
 -- Visual --
 keymap("v", "J", ":m '>+1<CR>gv=gv")
