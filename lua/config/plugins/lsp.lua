@@ -67,18 +67,7 @@ return {
     },
     config = function()
         setup_keymaps()
-        local capabilities = require("blink.cmp").get_lsp_capabilities()
-        local lspconfig = require "lspconfig"
-        lspconfig.ts_ls.setup { capabilities = capabilities }
-        lspconfig.biome.setup {
-            -- Optional custom configuration
-            capabilities = capabilities,
-            cmd = { "biome", "lsp-proxy" },
-            root_dir = lspconfig.util.root_pattern("biome.json", "package.json"),
-            single_file_support = false,
-        }
-        lspconfig.tailwindcss.setup { capabilities = capabilities }
-        lspconfig.elixirls.setup { capabilities = capabilities }
+
         vim.diagnostic.config {
             signs = {
                 text = {
@@ -100,6 +89,27 @@ return {
                 prefix = "",
             },
         }
+
+        local lspconfig = require "lspconfig"
+
+        local servers = require("mason-lspconfig").get_installed_servers()
+
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+        for _, server_name in ipairs(servers) do
+            local server_opts = {
+                capabilities = capabilities,
+            }
+            if server_name == "biome" then
+                server_opts.cmd = { "biome", "lsp-proxy" }
+                server_opts.root_dir = lspconfig.util.root_pattern("biome.json", "package.json")
+                server_opts.single_file_support = false
+            end
+
+            if server_name ~= "lua_ls" then
+                lspconfig[server_name].setup(server_opts)
+            end
+        end
 
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
