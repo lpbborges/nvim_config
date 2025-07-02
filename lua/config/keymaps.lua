@@ -22,9 +22,16 @@ keymap("n", "Q", "<nop>")
 keymap("n", "<C-n>", "<cmd>cnext<CR>", opts)
 keymap("n", "<C-p>", "<cmd>cprev<CR>", opts)
 
-keymap({ "n", "x" }, "<leader>f", function()
-  require("conform").format({ async = true })
-end, opts)
+keymap({ "x", "v", "n" }, "<leader>f", function()
+    require("conform").format({ async = true }, function(err)
+        if not err then
+            local mode = vim.api.nvim_get_mode().mode
+            if vim.startswith(string.lower(mode), "v") then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+            end
+        end
+    end)
+end, { desc = "Format code" })
 
 keymap("n", "<leader>Ao", ":AiderOpen<CR>", { noremap = true, silent = true })
 keymap("n", "<leader>Am", ":AiderAddModifiedFiles<CR>", { noremap = true, silent = true })
@@ -36,7 +43,7 @@ keymap("n", "<up>", '<cmd>echo "Use k to move!!"<CR>', opts)
 keymap("n", "<down>", '<cmd>echo "Use j to move!!"<CR>', opts)
 
 keymap("n", "<leader><leader>x", function()
-  vim.cmd("so")
+    vim.cmd "so"
 end)
 
 -- next greatest remap ever : asbjornHaland
