@@ -90,27 +90,6 @@ return {
             },
         }
 
-        local lspconfig = require "lspconfig"
-
-        local servers = require("mason-lspconfig").get_installed_servers()
-
-        local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-        for _, server_name in ipairs(servers) do
-            local server_opts = {
-                capabilities = capabilities,
-            }
-            if server_name == "biome" then
-                server_opts.cmd = { "biome", "lsp-proxy" }
-                server_opts.root_dir = lspconfig.util.root_pattern("biome.json", "package.json")
-                server_opts.single_file_support = false
-            end
-
-            if server_name ~= "lua_ls" then
-                lspconfig[server_name].setup(server_opts)
-            end
-        end
-
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(args)
                 local client = vim.lsp.get_client_by_id(args.data.client_id)
