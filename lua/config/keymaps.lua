@@ -65,3 +65,5 @@ keymap("i", "<C-c>", "<Esc>", opts)
 -- Visual Block --
 -- greatest remap ever
 keymap("x", "p", [["_dP]])
+
+keymap("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
