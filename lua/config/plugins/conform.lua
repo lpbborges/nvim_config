@@ -13,9 +13,10 @@ return {
             formatters_by_ft = {
                 -- Biome for JavaScript ecosystem
                 javascript = { "biome" },
-                typescript = { "biome" },
+                typescript = { "biome", "prettierd" },
                 javascriptreact = { "biome" },
                 typescriptreact = { "biome" },
+                svelte = { "prettierd" },
                 json = { "biome" },
                 lua = { "stylua" },
                 elixir = { "mix" },
