@@ -1,5 +1,6 @@
 return {
     "stevearc/conform.nvim",
+    event = { "BufWritePre" },
     config = function()
         require("conform").setup {
             formatters = {
@@ -24,6 +25,10 @@ return {
                 eelixir = { "mix" }, -- For embedded Elixir in templates
                 -- Add trim_whitespace for other file types
                 ["*"] = { "trim_whitespace" }, -- Apply to all other filetypes
+            },
+            format_on_save = {
+                timeout_ms = 500,
+                lsp_fallback = true,
             },
         }
     end,
