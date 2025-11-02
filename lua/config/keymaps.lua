@@ -33,7 +33,7 @@ keymap({ "x", "v", "n" }, "<leader>f", function()
     end)
 end, { desc = "Format code" })
 
-keymap("n", "<leader>Ao", ":AiderOpen<CR>", { noremap = true, silent = true })
+keymap("n", "<leader>Ao", ":AiderOpen --no-auto-commits<CR>", { noremap = true, silent = true })
 keymap("n", "<leader>Am", ":AiderAddModifiedFiles<CR>", { noremap = true, silent = true })
 
 -- Block to use arrow keys

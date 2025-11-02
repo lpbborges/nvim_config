@@ -15,7 +15,7 @@ return {
                 javascript = { "biome" },
                 typescript = { "biome", "prettierd" },
                 javascriptreact = { "biome" },
-                typescriptreact = { "biome" },
+                typescriptreact = { "biome", "prettierd" },
                 svelte = { "prettierd" },
                 json = { "biome" },
                 lua = { "stylua" },
