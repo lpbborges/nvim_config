@@ -4,7 +4,6 @@ return {
     config = function()
         require("conform").setup {
             formatters = {
-                -- Custom formatter for trimming trailing whitespace
                 trim_whitespace = {
                     command = "sed",
                     args = { "-E", "s/[[:space:]]+$//g" },
@@ -12,7 +11,6 @@ return {
                 },
             },
             formatters_by_ft = {
-                -- Biome for JavaScript ecosystem
                 javascript = { "biome" },
                 typescript = { "biome", "prettierd" },
                 javascriptreact = { "biome" },
@@ -22,14 +20,26 @@ return {
                 lua = { "stylua" },
                 elixir = { "mix" },
                 heex = { "mix" },
-                eelixir = { "mix" }, -- For embedded Elixir in templates
+                eelixir = { "mix" },
                 -- Add trim_whitespace for other file types
-                ["*"] = { "trim_whitespace" }, -- Apply to all other filetypes
+                ["*"] = { "trim_whitespace" },
             },
-            format_on_save = {
-                timeout_ms = 500,
-                lsp_fallback = true,
-            },
+            format_on_save = function(bufnr)
+                local bufname = vim.api.nvim_buf_get_name(bufnr)
+
+                if bufname:match("/kenlo/") then
+                   return {
+                        timeout_ms = 500,
+                        formatters = { "trim_whitespace" },
+                        lsp_fallback = false,
+                    }
+                end
+
+                return {
+                    timeout_ms = 500,
+                    lsp_fallback = true,
+                }
+            end,
         }
     end,
 }
