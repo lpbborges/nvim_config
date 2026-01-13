@@ -10,6 +10,16 @@ return {
         nerd_font_variant = 'mono'
       },
       signature = { enabled = true },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'codecompanion' },
+        providers = {
+            codecompanion = {
+                name = "CodeCompanion",
+                module = "codecompanion.providers.completion.blink",
+                enabled = true,
+            },
+        },
+      },
     },
   },
 }
