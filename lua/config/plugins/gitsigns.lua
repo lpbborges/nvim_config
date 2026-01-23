@@ -2,7 +2,7 @@ return {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-        require("gitsigns").setup({
+        require("gitsigns").setup {
             current_line_blame = true,
 
             current_line_blame_opts = {
@@ -12,7 +12,7 @@ return {
                 ignore_whitespace = false,
                 virt_text_priority = 100,
             },
-            current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
+            current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
 
             on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
@@ -24,20 +24,28 @@ return {
                 end
 
                 map("n", "]c", function()
-                    if vim.wo.diff then return "]c" end
-                    vim.schedule(function() gs.next_hunk() end)
+                    if vim.wo.diff then
+                        return "]c"
+                    end
+                    vim.schedule(function()
+                        gs.next_hunk()
+                    end)
                     return "<Ignore>"
                 end, { expr = true })
 
                 map("n", "[c", function()
-                    if vim.wo.diff then return "[c" end
-                    vim.schedule(function() gs.prev_hunk() end)
+                    if vim.wo.diff then
+                        return "[c"
+                    end
+                    vim.schedule(function()
+                        gs.prev_hunk()
+                    end)
                     return "<Ignore>"
                 end, { expr = true })
 
                 map("n", "<leader>gb", gs.toggle_current_line_blame, { desc = "Toggle Git Blame" })
                 map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview Git Hunk" })
             end,
-        })
+        }
     end,
 }

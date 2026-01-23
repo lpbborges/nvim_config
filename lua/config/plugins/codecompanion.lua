@@ -5,7 +5,7 @@ return {
         "nvim-treesitter/nvim-treesitter",
     },
     config = function()
-        require("codecompanion").setup({
+        require("codecompanion").setup {
             strategies = {
                 chat = {
                     adapter = "ollama",
@@ -37,11 +37,26 @@ return {
                     })
                 end,
             },
-        })
+        }
 
         -- Recommended Keymaps
-        vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true, desc = "Toggle CodeCompanion Chat" })
-        vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "CodeCompanion Actions" })
-        vim.keymap.set({ "n", "v" }, "<leader>ci", "<cmd>CodeCompanion<cr>", { noremap = true, silent = true, desc = "CodeCompanion Inline Prompt" })
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>cc",
+            "<cmd>CodeCompanionChat Toggle<cr>",
+            { noremap = true, silent = true, desc = "Toggle CodeCompanion Chat" }
+        )
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>ca",
+            "<cmd>CodeCompanionActions<cr>",
+            { noremap = true, silent = true, desc = "CodeCompanion Actions" }
+        )
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>ci",
+            "<cmd>CodeCompanion<cr>",
+            { noremap = true, silent = true, desc = "CodeCompanion Inline Prompt" }
+        )
     end,
 }
