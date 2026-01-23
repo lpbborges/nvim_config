@@ -23,7 +23,7 @@ return {
                 "ts_ls",
                 "yamlls",
                 "ruby_lsp",
-                "stylua"
+                "stylua",
             }
             require("mason-lspconfig").setup {
                 ensure_installed = ensure_installed,
@@ -43,7 +43,6 @@ return {
 
                         lspconfig[server_name].setup(opts)
                     end,
-                    ["lua_ls"] = function() end,
                 },
                 automatic_installation = true,
             }
