@@ -51,6 +51,8 @@ keymap({ "n", "v" }, "<leader>y", [["+y]])
 keymap("n", "<leader>Y", [["+Y]])
 keymap({ "n", "v" }, "<leader>d", [["_d]])
 
+keymap("n", "<leader>bb", "<cmd>b#<CR>", { desc = "Switch to previous buffer" })
+
 -- Visual --
 keymap("v", "J", ":m '>+1<CR>gv=gv")
 keymap("v", "K", ":m '<-2<CR>gv=gv")
@@ -65,5 +67,6 @@ keymap("i", "<C-c>", "<Esc>", opts)
 -- Visual Block --
 -- greatest remap ever
 keymap("x", "p", [["_dP]])
+keymap("x", "g/", "<Esc>/\\%V", { desc = "Search inside visual selection" })
 
 keymap("n", "<leader>gg", "<cmd>LazyGitCurrentFile<CR>", { desc = "LazyGit" })
