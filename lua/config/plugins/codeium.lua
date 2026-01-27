@@ -8,7 +8,7 @@ return {
         vim.api.nvim_set_hl(0, "CodeiumSuggestion", { link = "Comment", default = true })
     end,
     config = function()
-        require("codeium").setup({
+        require("codeium").setup {
             enable_cmp_source = false,
             virtual_text = {
                 enabled = true,
@@ -21,6 +21,6 @@ return {
                     dismiss = "<C-]>",
                 },
             },
-        })
+        }
     end,
 }
