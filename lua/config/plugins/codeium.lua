@@ -1,9 +1,12 @@
 return {
     "Exafunction/codeium.nvim",
-    event = "BufEnter",
+    event = "InsertEnter",
     dependencies = {
         "nvim-lua/plenary.nvim",
     },
+    init = function()
+        vim.api.nvim_set_hl(0, "CodeiumSuggestion", { link = "Comment", default = true })
+    end,
     config = function()
         require("codeium").setup({
             enable_cmp_source = false,
@@ -19,17 +22,5 @@ return {
                 },
             },
         })
-
-        -- CUSTOM TOGGLE FUNCTION
-        vim.keymap.set("n", "<leader>ct", function()
-
-            if vim.g.codeium_enabled == true or vim.g.codeium_enabled == nil then
-                vim.g.codeium_enabled = false
-                vim.notify("Codeium Disabled", vim.log.levels.INFO)
-            else
-                vim.g.codeium_enabled = true
-                vim.notify("Codeium Enabled", vim.log.levels.INFO)
-            end
-        end, { noremap = true, silent = true, desc = "Toggle Codeium" })
     end,
 }
