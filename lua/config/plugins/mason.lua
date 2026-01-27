@@ -30,16 +30,10 @@ return {
                 handlers = {
                     function(server_name)
                         local capabilities = require("blink.cmp").get_lsp_capabilities()
-                        local lspconfig = require "lsp_config"
+                        local lspconfig = require "lspconfig"
                         local opts = {
                             capabilities = capabilities,
                         }
-
-                        if server_name == "biome" then
-                            opts.cmd = { "biome", "lsp-proxy" }
-                            opts.root_dir = lspconfig.util.root_pattern("biome.json", "package.json")
-                            opts.single_file_support = false
-                        end
 
                         lspconfig[server_name].setup(opts)
                     end,
