@@ -65,6 +65,18 @@ keymap("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
 
+keymap("n", "<leader>cp", function()
+    local path = vim.fn.expand "%"
+    vim.fn.setreg("+", path)
+    vim.notify("Copied relative path: " .. path)
+end, { desc = "Copy Relative Path" })
+
+keymap("n", "<leader>cP", function()
+    local path = vim.fn.expand "%:p"
+    vim.fn.setreg("+", path)
+    vim.notify("Copied absolute path: " .. path)
+end, { desc = "Copy Absolute Path" })
+
 -- Visual --
 keymap("v", "J", ":m '>+1<CR>gv=gv")
 keymap("v", "K", ":m '<-2<CR>gv=gv")
