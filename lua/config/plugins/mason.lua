@@ -35,6 +35,15 @@ return {
                             capabilities = capabilities,
                         }
 
+                        if server_name == "lua_ls" then
+                            opts.settings = {
+                                Lua = {
+                                    diagnostics = { globals = { "vim" } },
+                                    workspace = { checkThirdParty = false },
+                                },
+                            }
+                        end
+
                         lspconfig[server_name].setup(opts)
                     end,
                 },
