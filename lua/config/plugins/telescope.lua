@@ -6,7 +6,10 @@ return {
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
     config = function()
-        require("telescope").setup {
+        local telescope = require "telescope"
+        local builtin = require "telescope.builtin"
+
+        telescope.setup {
             pickers = {
                 find_files = {
                     find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
@@ -22,9 +25,23 @@ return {
             },
         }
 
-        require("telescope").load_extension "fzf"
+        telescope.load_extension "fzf"
 
-        local builtin = require "telescope.builtin"
+        local function get_git_root()
+            local current_file_dir = vim.fn.expand "%:p:h"
+
+            if current_file_dir == "" then
+                return vim.fn.getcwd()
+            end
+
+            local git_dir = vim.fn.finddir(".git", current_file_dir .. ";")
+
+            if git_dir ~= "" then
+                return vim.fn.fnamemodify(git_dir, ":h")
+            end
+
+            return vim.fn.getcwd()
+        end
 
         vim.keymap.set("n", "<leader>ff", builtin.find_files)
         vim.keymap.set("n", "<leader>fgi", builtin.git_files)
@@ -39,6 +56,12 @@ return {
                 cwd = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
             }
         end)
+        vim.keymap.set("n", "<leader>pf", function()
+            builtin.find_files { cwd = get_git_root() }
+        end, { desc = "Find Files (Git Root)" })
+        vim.keymap.set("n", "<leader>ps", function()
+            builtin.live_grep { cwd = get_git_root() }
+        end, { desc = "Grep (Git Root)" })
 
         require("config.telescope.multigrep").setup()
     end,
