@@ -3,7 +3,7 @@ return {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
-            require("nvim-treesitter").setup {
+            require("nvim-treesitter.configs").setup {
                 sync_install = true,
                 ensure_installed = {
                     "bash",
@@ -19,6 +19,7 @@ return {
                     "vim",
                     "vimdoc",
                     "query",
+                    "svelte",
                 },
                 auto_install = true,
                 highlight = {
