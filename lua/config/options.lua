@@ -46,3 +46,14 @@ set.writebackup = false
 set.formatoptions:remove { "c", "r", "o" }
 set.isfname:append "@-@"
 set.shortmess:append "c"
+
+local default_notify = vim.notify
+
+-- skip annoying messages
+vim.notify = function(msg, level, opts)
+    if msg and msg:match "skipping file refresh due to debounce" then
+        return
+    end
+
+    default_notify(msg, level, opts)
+end
