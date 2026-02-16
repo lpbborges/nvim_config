@@ -23,7 +23,6 @@ return {
                 "ts_ls",
                 "yamlls",
                 "ruby_lsp",
-                "stylua",
             }
             require("mason-lspconfig").setup {
                 ensure_installed = ensure_installed,
