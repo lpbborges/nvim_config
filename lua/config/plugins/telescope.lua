@@ -43,8 +43,10 @@ return {
             return vim.fn.getcwd()
         end
 
-        vim.keymap.set("n", "<leader>ff", builtin.find_files)
-        vim.keymap.set("n", "<leader>fgi", builtin.git_files)
+        vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
+        vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find Buffers" })
+        vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent Files" })
+        vim.keymap.set("n", "<leader>fgi", builtin.git_files, { desc = "Git Files" })
         vim.keymap.set("n", "<leader>fh", builtin.help_tags)
         vim.keymap.set("n", "<leader>en", function()
             builtin.find_files {
