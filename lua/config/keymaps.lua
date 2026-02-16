@@ -33,9 +33,6 @@ keymap({ "x", "v", "n" }, "<leader>f", function()
     end)
 end, { desc = "Format code" })
 
-keymap("n", "<leader>Ao", ":AiderOpen --no-auto-commits<CR>", { noremap = true, silent = true })
-keymap("n", "<leader>Am", ":AiderAddModifiedFiles<CR>", { noremap = true, silent = true })
-
 -- Block to use arrow keys
 keymap("n", "<left>", '<cmd>echo "Use h to move!!"<CR>', opts)
 keymap("n", "<right>", '<cmd>echo "Use l to move!!"<CR>', opts)

@@ -45,6 +45,21 @@ return {
 
                 map("n", "<leader>gb", gs.toggle_current_line_blame, { desc = "Toggle Git Blame" })
                 map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview Git Hunk" })
+                map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage Hunk" })
+                map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset Hunk" })
+                map("v", "<leader>hs", function()
+                    gs.stage_hunk { vim.fn.line ".", vim.fn.line "v" }
+                end, { desc = "Stage Selection" })
+                map("v", "<leader>hr", function()
+                    gs.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
+                end, { desc = "Reset Selection" })
+                map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage Buffer" })
+                map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset Buffer" })
+                map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo Stage Hunk" })
+                map("n", "<leader>hd", gs.diffthis, { desc = "Diff This" })
+                map("n", "<leader>hD", function()
+                    gs.diffthis "~"
+                end, { desc = "Diff This (HEAD)" })
             end,
         }
     end,
