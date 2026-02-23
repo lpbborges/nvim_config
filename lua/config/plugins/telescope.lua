@@ -43,6 +43,7 @@ return {
             return vim.fn.getcwd()
         end
 
+        vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Workspace Diagnostics" })
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
         vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find Buffers" })
         vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent Files" })

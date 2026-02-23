@@ -45,6 +45,38 @@ return {
 
                         lspconfig[server_name].setup(opts)
                     end,
+                    ["tailwindcss"] = function()
+                        local capabilities = require("blink.cmp").get_lsp_capabilities()
+                        require("lspconfig").tailwindcss.setup {
+                            capabilities = capabilities,
+                            filetypes = {
+                                "html",
+                                "css",
+                                "scss",
+                                "javascript",
+                                "javascriptreact",
+                                "typescript",
+                                "typescriptreact",
+                                "svelte",
+                                "elixir",
+                                "heex",
+                            },
+                            init_options = {
+                                userLanguages = {
+                                    heex = "html",
+                                    elixir = "html",
+                                },
+                            },
+                            settings = {
+                                tailwindCSS = {
+                                    includeLanguages = {
+                                        heex = "html",
+                                        elixir = "html",
+                                    },
+                                },
+                            },
+                        }
+                    end,
                 },
                 automatic_installation = true,
             }
