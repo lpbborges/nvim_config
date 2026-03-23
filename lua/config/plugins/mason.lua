@@ -19,6 +19,7 @@ return {
                 "html",
                 "jsonls",
                 "lua_ls",
+                "pyright",
                 "tailwindcss",
                 "ts_ls",
                 "yamlls",

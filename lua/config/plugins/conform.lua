@@ -23,6 +23,7 @@ return {
                 elixir = { "mix" },
                 heex = { "mix" },
                 eelixir = { "mix" }, -- For embedded Elixir in templates
+                python = { "isort", "black" },
                 -- Add trim_whitespace for other file types
                 ["*"] = { "trim_whitespace" }, -- Apply to all other filetypes
             },
