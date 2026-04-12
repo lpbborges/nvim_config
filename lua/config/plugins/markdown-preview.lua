@@ -18,7 +18,7 @@ local function open_preview(filepath)
     close_preview()
     source_buf = vim.api.nvim_get_current_buf()
 
-    vim.cmd("vsplit")
+    vim.cmd("botright vsplit")
     preview_win = vim.api.nvim_get_current_win()
     preview_buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_win_set_buf(preview_win, preview_buf)
@@ -30,12 +30,22 @@ local function open_preview(filepath)
     vim.wo[preview_win].statusline = " Markdown Preview"
 
     -- Run glow in the terminal buffer
-    vim.fn.termopen("glow -s dark " .. vim.fn.shellescape(filepath), {
-        on_exit = function() end,
-    })
+    vim.fn.termopen("glow -s dark " .. vim.fn.shellescape(filepath))
 
     -- Return focus to the markdown buffer
     vim.cmd("wincmd p")
+end
+
+local function refresh_preview(filepath)
+    local old_buf = preview_buf
+    preview_buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_win_set_buf(preview_win, preview_buf)
+    if old_buf and vim.api.nvim_buf_is_valid(old_buf) then
+        vim.api.nvim_buf_delete(old_buf, { force = true })
+    end
+    vim.api.nvim_buf_call(preview_buf, function()
+        vim.fn.termopen("glow -s dark " .. vim.fn.shellescape(filepath))
+    end)
 end
 
 local function toggle_preview()
@@ -57,7 +67,7 @@ local function toggle_preview()
 end
 
 return {
-    "nvim-lua/plenary.nvim",
+    dir = vim.fn.stdpath("config"),
     name = "markdown-preview",
     lazy = true,
     ft = "markdown",
@@ -74,7 +84,7 @@ return {
             callback = function()
                 if preview_win and vim.api.nvim_win_is_valid(preview_win) then
                     if vim.api.nvim_get_current_buf() == source_buf then
-                        open_preview(vim.fn.expand("%:p"))
+                        refresh_preview(vim.fn.expand("%:p"))
                     end
                 end
             end,
