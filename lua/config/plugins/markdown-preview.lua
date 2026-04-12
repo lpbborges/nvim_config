@@ -1,5 +1,6 @@
 local preview_buf = nil
 local preview_win = nil
+local source_buf = nil
 
 local function close_preview()
     if preview_win and vim.api.nvim_win_is_valid(preview_win) then
@@ -10,10 +11,12 @@ local function close_preview()
     end
     preview_buf = nil
     preview_win = nil
+    source_buf = nil
 end
 
 local function open_preview(filepath)
     close_preview()
+    source_buf = vim.api.nvim_get_current_buf()
 
     vim.cmd("vsplit")
     preview_win = vim.api.nvim_get_current_win()
@@ -44,7 +47,12 @@ local function toggle_preview()
     if preview_win and vim.api.nvim_win_is_valid(preview_win) then
         close_preview()
     else
-        open_preview(vim.fn.expand("%:p"))
+        local filepath = vim.fn.expand("%:p")
+        if filepath == "" then
+            vim.notify("No file path — save the buffer first", vim.log.levels.WARN)
+            return
+        end
+        open_preview(filepath)
     end
 end
 
@@ -65,7 +73,9 @@ return {
             pattern = "*.md",
             callback = function()
                 if preview_win and vim.api.nvim_win_is_valid(preview_win) then
-                    open_preview(vim.fn.expand("%:p"))
+                    if vim.api.nvim_get_current_buf() == source_buf then
+                        open_preview(vim.fn.expand("%:p"))
+                    end
                 end
             end,
         })
@@ -74,8 +84,7 @@ return {
         vim.api.nvim_create_autocmd("WinClosed", {
             callback = function(args)
                 if tonumber(args.match) == preview_win then
-                    preview_buf = nil
-                    preview_win = nil
+                    close_preview()
                 end
             end,
         })
