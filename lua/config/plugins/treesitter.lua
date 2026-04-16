@@ -1,43 +1,42 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        branch = "master",
+        branch = "main",
+        lazy = false,
         build = ":TSUpdate",
         config = function()
-            require("nvim-treesitter.configs").setup {
-                sync_install = true,
-                ensure_installed = {
-                    "bash",
-                    "c",
-                    "elixir",
-                    "heex",
-                    "html",
-                    "javascript",
-                    "lua",
-                    "markdown",
-                    "markdown_inline",
-                    "typescript",
-                    "vim",
-                    "vimdoc",
-                    "query",
-                    "svelte",
-                },
-                auto_install = true,
-                highlight = {
-                    enable = true,
-                    disable = function(_, buf)
-                        local max_filesize = 100 * 2024 -- 200 KB
-                        local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+            require("nvim-treesitter").setup {}
 
-                        if ok and stats and stats.size > max_filesize then
-                            return true
-                        end
-                    end,
-                    additional_vim_regex_highlighting = false,
-                },
-                indent = { enable = true },
-                autopairs = { enable = true },
-            }
+            -- Install parsers (no-op if already installed)
+            require("nvim-treesitter").install({
+                "bash",
+                "c",
+                "elixir",
+                "heex",
+                "html",
+                "javascript",
+                "lua",
+                "markdown",
+                "markdown_inline",
+                "typescript",
+                "vim",
+                "vimdoc",
+                "query",
+                "svelte",
+            })
+
+            -- Auto-enable treesitter highlighting for all filetypes with an installed parser
+            vim.api.nvim_create_autocmd("FileType", {
+                callback = function(args)
+                    local buf = args.buf
+                    local ft = vim.bo[buf].filetype
+                    if ft == "" then return end
+                    local ok = pcall(vim.treesitter.start, buf)
+                    if not ok then
+                        vim.treesitter.stop(buf)
+                    end
+                end,
+            })
         end,
     },
 }
