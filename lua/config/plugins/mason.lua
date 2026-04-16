@@ -43,10 +43,16 @@ return {
                         require("lspconfig").tailwindcss.setup {
                             capabilities = require("blink.cmp").get_lsp_capabilities(),
                             filetypes = {
-                                "html", "css", "scss",
-                                "javascript", "javascriptreact",
-                                "typescript", "typescriptreact",
-                                "svelte", "elixir", "heex",
+                                "html",
+                                "css",
+                                "scss",
+                                "javascript",
+                                "javascriptreact",
+                                "typescript",
+                                "typescriptreact",
+                                "svelte",
+                                "elixir",
+                                "heex",
                             },
                             init_options = {
                                 userLanguages = { heex = "html", elixir = "html" },
@@ -63,8 +69,12 @@ return {
 
             -- Diagnostic keymaps (global — work without an attached LSP)
             vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, { noremap = true, silent = true })
-            vim.keymap.set("n", "[d", function() vim.diagnostic.jump { count = -1 } end, { noremap = true, silent = true })
-            vim.keymap.set("n", "]d", function() vim.diagnostic.jump { count = 1 } end, { noremap = true, silent = true })
+            vim.keymap.set("n", "[d", function()
+                vim.diagnostic.jump { count = -1 }
+            end, { noremap = true, silent = true })
+            vim.keymap.set("n", "]d", function()
+                vim.diagnostic.jump { count = 1 }
+            end, { noremap = true, silent = true })
 
             -- LSP keymaps — buffer-local, set when a server attaches
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -74,16 +84,16 @@ return {
                         vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = buf, desc = desc })
                     end
 
-                    map("n", "K",           vim.lsp.buf.hover,           "Hover")
-                    map("n", "gd",          vim.lsp.buf.definition,      "Go to Definition")
-                    map("n", "gD",          vim.lsp.buf.declaration,     "Go to Declaration")
-                    map("n", "gi",          vim.lsp.buf.implementation,  "Go to Implementation")
-                    map("n", "gt",          vim.lsp.buf.type_definition, "Go to Type Definition")
-                    map("n", "<leader>vrr", vim.lsp.buf.references,      "References")
-                    map("n", "<leader>vrn", vim.lsp.buf.rename,          "Rename")
-                    map("i", "<C-h>",       vim.lsp.buf.signature_help,  "Signature Help")
-                    map("n", "<leader>ca",  vim.lsp.buf.code_action,     "Code Action")
-                    map("v", "<leader>ca",  vim.lsp.buf.code_action,     "Code Action (range)")
+                    map("n", "K", vim.lsp.buf.hover, "Hover")
+                    map("n", "gd", vim.lsp.buf.definition, "Go to Definition")
+                    map("n", "gD", vim.lsp.buf.declaration, "Go to Declaration")
+                    map("n", "gi", vim.lsp.buf.implementation, "Go to Implementation")
+                    map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
+                    map("n", "<leader>vrr", vim.lsp.buf.references, "References")
+                    map("n", "<leader>vrn", vim.lsp.buf.rename, "Rename")
+                    map("i", "<C-h>", vim.lsp.buf.signature_help, "Signature Help")
+                    map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
+                    map("v", "<leader>ca", vim.lsp.buf.code_action, "Code Action (range)")
                 end,
             })
 
@@ -91,9 +101,9 @@ return {
                 signs = {
                     text = {
                         [vim.diagnostic.severity.ERROR] = "E",
-                        [vim.diagnostic.severity.WARN]  = "W",
-                        [vim.diagnostic.severity.HINT]  = "H",
-                        [vim.diagnostic.severity.INFO]  = "I",
+                        [vim.diagnostic.severity.WARN] = "W",
+                        [vim.diagnostic.severity.HINT] = "H",
+                        [vim.diagnostic.severity.INFO] = "I",
                     },
                 },
                 virtual_text = false,

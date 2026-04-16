@@ -10,6 +10,7 @@ return {
                 nerd_font_variant = "mono",
             },
             signature = { enabled = true },
+            snippets = { preset = "default" },
             sources = {
                 default = { "lsp", "path", "snippets", "buffer" },
                 providers = {
