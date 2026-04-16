@@ -23,6 +23,7 @@ return {
                 "vimdoc",
                 "query",
                 "svelte",
+                "python",
             })
 
             -- Auto-enable treesitter highlighting for all filetypes with an installed parser

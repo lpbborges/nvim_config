@@ -3,14 +3,6 @@ return {
     event = { "BufWritePre" },
     config = function()
         require("conform").setup {
-            formatters = {
-                -- Custom formatter for trimming trailing whitespace
-                trim_whitespace = {
-                    command = "sed",
-                    args = { "-E", "s/[[:space:]]+$//g" },
-                    stdin = true,
-                },
-            },
             formatters_by_ft = {
                 -- Biome for JavaScript ecosystem
                 javascript = { "biome" },
@@ -29,7 +21,7 @@ return {
             },
             format_on_save = {
                 timeout_ms = 500,
-                lsp_fallback = true,
+                lsp_format = "fallback",
             },
         }
     end,

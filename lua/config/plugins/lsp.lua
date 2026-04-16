@@ -1,54 +1,3 @@
-local setup_keymaps = function()
-    --- A helper function to set keymaps with default options.
-    ---@param mode string | string[] The Vim mode(s) for the mapping (e.g., "n", "i", {"n", "v"}).
-    ---@param lhs string The key sequence (left-hand side of the mapping).
-    ---@param rhs string | function The Lua function to execute (right-hand side of the mapping).
-    local custom_keymaps = function(mode, lhs, rhs)
-        local keymap = vim.keymap.set
-        local opts = { noremap = true, silent = true }
-
-        keymap(mode, lhs, rhs, opts)
-    end
-
-    -- Diagnostic keymaps
-    custom_keymaps("n", "<leader>vd", function()
-        vim.diagnostic.open_float()
-    end)
-
-    custom_keymaps("n", "[d", function()
-        vim.diagnostic.jump { count = -1 }
-    end)
-    custom_keymaps("n", "]d", function()
-        vim.diagnostic.jump { count = 1 }
-    end)
-
-    -- LSP keymaps
-    custom_keymaps("n", "K", function()
-        vim.lsp.buf.hover()
-    end)
-    custom_keymaps("n", "gd", function()
-        vim.lsp.buf.definition()
-    end)
-    custom_keymaps("n", "gD", function()
-        vim.lsp.buf.declaration()
-    end)
-    custom_keymaps("n", "gi", function()
-        vim.lsp.buf.implementation()
-    end)
-    custom_keymaps("n", "gt", function()
-        vim.lsp.buf.type_definition()
-    end)
-    custom_keymaps("n", "<leader>vrr", function()
-        vim.lsp.buf.references()
-    end)
-    custom_keymaps("i", "<C-h>", function()
-        vim.lsp.buf.signature_help()
-    end)
-    custom_keymaps("n", "<leader>vrn", function()
-        vim.lsp.buf.rename()
-    end)
-end
-
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -67,7 +16,33 @@ return {
         },
     },
     config = function()
-        setup_keymaps()
+        -- Diagnostic keymaps (global — don't need LSP attached)
+        vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, { noremap = true, silent = true })
+        vim.keymap.set("n", "[d", function()
+            vim.diagnostic.jump { count = -1 }
+        end, { noremap = true, silent = true })
+        vim.keymap.set("n", "]d", function()
+            vim.diagnostic.jump { count = 1 }
+        end, { noremap = true, silent = true })
+
+        -- LSP keymaps — set buffer-local only when an LSP attaches
+        vim.api.nvim_create_autocmd("LspAttach", {
+            callback = function(args)
+                local buf = args.buf
+                local map = function(mode, lhs, rhs, desc)
+                    vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = buf, desc = desc })
+                end
+
+                map("n", "K", vim.lsp.buf.hover, "Hover")
+                map("n", "gd", vim.lsp.buf.definition, "Go to Definition")
+                map("n", "gD", vim.lsp.buf.declaration, "Go to Declaration")
+                map("n", "gi", vim.lsp.buf.implementation, "Go to Implementation")
+                map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
+                map("n", "<leader>vrr", vim.lsp.buf.references, "References")
+                map("n", "<leader>vrn", vim.lsp.buf.rename, "Rename")
+                map("i", "<C-h>", vim.lsp.buf.signature_help, "Signature Help")
+            end,
+        })
 
         vim.diagnostic.config {
             signs = {
@@ -79,7 +54,7 @@ return {
                 },
             },
             virtual_text = true,
-            update_in_insert = true,
+            update_in_insert = false,
             underline = true,
             severity_sort = true,
             float = {

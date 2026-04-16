@@ -12,7 +12,9 @@ return {
             signature = { enabled = true },
             sources = {
                 default = { "lsp", "path", "snippets", "buffer" },
-                min_keyword_length = 3,
+                providers = {
+                    buffer = { min_keyword_length = 3 },
+                },
             },
         },
     },
