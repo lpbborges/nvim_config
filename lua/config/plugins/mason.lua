@@ -4,77 +4,106 @@ return {
         dependencies = {
             "williamboman/mason.nvim",
             "neovim/nvim-lspconfig",
+            "saghen/blink.cmp",
         },
         config = function()
             require("mason").setup {
-                ui = {
-                    border = "rounded",
-                },
+                ui = { border = "rounded" },
             }
-            local ensure_installed = {
-                "bashls",
-                "cssls",
-                "elixirls",
-                "eslint",
-                "html",
-                "jsonls",
-                "lua_ls",
-                "pyright",
-                "tailwindcss",
-                "ts_ls",
-                "yamlls",
-                "ruby_lsp",
-            }
+
             require("mason-lspconfig").setup {
-                ensure_installed = ensure_installed,
+                ensure_installed = {
+                    "bashls",
+                    "cssls",
+                    "elixirls",
+                    "eslint",
+                    "html",
+                    "jsonls",
+                    "lua_ls",
+                    "pyright",
+                    "tailwindcss",
+                    "ts_ls",
+                    "yamlls",
+                    "ruby_lsp",
+                },
                 handlers = {
                     function(server_name)
                         local capabilities = require("blink.cmp").get_lsp_capabilities()
-                        local lspconfig = require "lspconfig"
-                        local opts = {
-                            capabilities = capabilities,
-                        }
-
-                        if server_name == "lua_ls" then
-                            opts.settings = {
+                        require("lspconfig")[server_name].setup { capabilities = capabilities }
+                    end,
+                    ["lua_ls"] = function()
+                        require("lspconfig").lua_ls.setup {
+                            capabilities = require("blink.cmp").get_lsp_capabilities(),
+                            settings = {
                                 Lua = { workspace = { checkThirdParty = false } },
-                            }
-                        end
-
-                        lspconfig[server_name].setup(opts)
+                            },
+                        }
                     end,
                     ["tailwindcss"] = function()
-                        local capabilities = require("blink.cmp").get_lsp_capabilities()
                         require("lspconfig").tailwindcss.setup {
-                            capabilities = capabilities,
+                            capabilities = require("blink.cmp").get_lsp_capabilities(),
                             filetypes = {
-                                "html",
-                                "css",
-                                "scss",
-                                "javascript",
-                                "javascriptreact",
-                                "typescript",
-                                "typescriptreact",
-                                "svelte",
-                                "elixir",
-                                "heex",
+                                "html", "css", "scss",
+                                "javascript", "javascriptreact",
+                                "typescript", "typescriptreact",
+                                "svelte", "elixir", "heex",
                             },
                             init_options = {
-                                userLanguages = {
-                                    heex = "html",
-                                    elixir = "html",
-                                },
+                                userLanguages = { heex = "html", elixir = "html" },
                             },
                             settings = {
                                 tailwindCSS = {
-                                    includeLanguages = {
-                                        heex = "html",
-                                        elixir = "html",
-                                    },
+                                    includeLanguages = { heex = "html", elixir = "html" },
                                 },
                             },
                         }
                     end,
+                },
+            }
+
+            -- Diagnostic keymaps (global — work without an attached LSP)
+            vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, { noremap = true, silent = true })
+            vim.keymap.set("n", "[d", function() vim.diagnostic.jump { count = -1 } end, { noremap = true, silent = true })
+            vim.keymap.set("n", "]d", function() vim.diagnostic.jump { count = 1 } end, { noremap = true, silent = true })
+
+            -- LSP keymaps — buffer-local, set when a server attaches
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function(args)
+                    local buf = args.buf
+                    local map = function(mode, lhs, rhs, desc)
+                        vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = buf, desc = desc })
+                    end
+
+                    map("n", "K",           vim.lsp.buf.hover,           "Hover")
+                    map("n", "gd",          vim.lsp.buf.definition,      "Go to Definition")
+                    map("n", "gD",          vim.lsp.buf.declaration,     "Go to Declaration")
+                    map("n", "gi",          vim.lsp.buf.implementation,  "Go to Implementation")
+                    map("n", "gt",          vim.lsp.buf.type_definition, "Go to Type Definition")
+                    map("n", "<leader>vrr", vim.lsp.buf.references,      "References")
+                    map("n", "<leader>vrn", vim.lsp.buf.rename,          "Rename")
+                    map("i", "<C-h>",       vim.lsp.buf.signature_help,  "Signature Help")
+                end,
+            })
+
+            vim.diagnostic.config {
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.ERROR] = "E",
+                        [vim.diagnostic.severity.WARN]  = "W",
+                        [vim.diagnostic.severity.HINT]  = "H",
+                        [vim.diagnostic.severity.INFO]  = "I",
+                    },
+                },
+                virtual_text = true,
+                update_in_insert = false,
+                underline = true,
+                severity_sort = true,
+                float = {
+                    focusable = true,
+                    style = "minimal",
+                    border = "rounded",
+                    header = "",
+                    prefix = "",
                 },
             }
         end,
