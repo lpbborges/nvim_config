@@ -83,6 +83,7 @@ return {
                     map("n", "<leader>vrn", vim.lsp.buf.rename,          "Rename")
                     map("i", "<C-h>",       vim.lsp.buf.signature_help,  "Signature Help")
                     map("n", "<leader>ca",  vim.lsp.buf.code_action,     "Code Action")
+                    map("v", "<leader>ca",  vim.lsp.buf.code_action,     "Code Action (range)")
                 end,
             })
 
