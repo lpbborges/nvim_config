@@ -79,7 +79,6 @@ return {
                         }
                     end,
                 },
-                automatic_installation = true,
             }
         end,
     },
