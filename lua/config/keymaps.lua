@@ -91,3 +91,14 @@ keymap("x", "p", [["_dP]])
 keymap("x", "g/", "<Esc>/\\%V", { desc = "Search inside visual selection" })
 
 keymap("n", "<leader>gg", "<cmd>LazyGitCurrentFile<CR>", { desc = "LazyGit" })
+
+-- Toggle auto-format on save
+keymap("n", "<leader>tf", function()
+    if vim.g.disable_autoformat then
+        vim.g.disable_autoformat = false
+        vim.notify("Auto-format on save: ON", vim.log.levels.INFO)
+    else
+        vim.g.disable_autoformat = true
+        vim.notify("Auto-format on save: OFF", vim.log.levels.INFO)
+    end
+end, { desc = "Toggle auto-format on save" })
