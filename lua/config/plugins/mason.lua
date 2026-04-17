@@ -31,6 +31,17 @@ return {
                         local capabilities = require("blink.cmp").get_lsp_capabilities()
                         require("lspconfig")[server_name].setup { capabilities = capabilities }
                     end,
+                    ["eslint"] = function()
+                        local has_config = vim.fn.glob(".eslintrc*") > 0
+                            or vim.fn.glob("eslint.config.*") > 0
+                            or vim.fn.glob(".eslintrc/**") > 0
+
+                        if has_config then
+                            require("lspconfig").eslint.setup {
+                                capabilities = require("blink.cmp").get_lsp_capabilities(),
+                            }
+                        end
+                    end,
                     ["lua_ls"] = function()
                         require("lspconfig").lua_ls.setup {
                             capabilities = require("blink.cmp").get_lsp_capabilities(),
