@@ -32,9 +32,16 @@ return {
                         require("lspconfig")[server_name].setup { capabilities = capabilities }
                     end,
                     ["eslint"] = function()
-                        local has_config = vim.fn.glob(".eslintrc*") > 0
-                            or vim.fn.glob("eslint.config.*") > 0
-                            or vim.fn.glob(".eslintrc/**") > 0
+                        local function has_eslint_config(dir)
+                            if not dir or dir == "" then return nil end
+                            local Patterns = { ".eslintrc*", "eslint.config.*", ".eslintrc" }
+                            return vim.fs.find(Patterns, { path = dir, upward = true })[1]
+                        end
+
+                        local cwd = vim.fn.getcwd()
+                        local first_buffer = vim.api.nvim_list_bufs()[1]
+                        local buf_dir = first_buffer and vim.fs.dirname(vim.api.nvim_buf_get_name(first_buffer)) or ""
+                        local has_config = has_eslint_config(cwd) or has_eslint_config(buf_dir)
 
                         if has_config then
                             require("lspconfig").eslint.setup {
