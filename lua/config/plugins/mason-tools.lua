@@ -11,7 +11,6 @@ return {
                 "stylua",
                 "black",
                 "isort",
-                "glow",
             },
         }
     end,

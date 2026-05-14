@@ -1,14 +1,11 @@
 return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        branch = "main",
-        lazy = false,
-        build = ":TSUpdate",
-        config = function()
-            require("nvim-treesitter").setup {}
-
-            -- Install parsers (no-op if already installed)
-            require("nvim-treesitter").install({
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate",
+    config = function()
+        require("nvim-treesitter").setup {
+            ensure_installed = {
                 "bash",
                 "c",
                 "elixir",
@@ -18,26 +15,32 @@ return {
                 "lua",
                 "markdown",
                 "markdown_inline",
+                "tsx",
                 "typescript",
                 "vim",
                 "vimdoc",
                 "query",
                 "svelte",
                 "python",
-            })
+            },
+            highlight = {
+                enable = true,
+            },
+            indent = {
+                enable = true,
+            },
+        }
 
-            -- Auto-enable treesitter highlighting for all filetypes with an installed parser
-            vim.api.nvim_create_autocmd("FileType", {
-                callback = function(args)
-                    local buf = args.buf
-                    local ft = vim.bo[buf].filetype
-                    if ft == "" then return end
-                    local ok = pcall(vim.treesitter.start, buf)
-                    if not ok then
-                        vim.treesitter.stop(buf)
-                    end
-                end,
-            })
-        end,
-    },
+        vim.api.nvim_create_autocmd("FileType", {
+            callback = function(args)
+                local buf = args.buf
+                local ft = vim.bo[buf].filetype
+                if ft == "" then return end
+                local ok = pcall(vim.treesitter.start, buf)
+                if not ok then
+                    vim.treesitter.stop(buf)
+                end
+            end,
+        })
+    end,
 }

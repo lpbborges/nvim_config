@@ -5,12 +5,12 @@ return {
         require("conform").setup {
             formatters_by_ft = {
                 -- Biome for JavaScript ecosystem
-                javascript = { "biome" },
-                typescript = { "biome", "prettierd" },
-                javascriptreact = { "biome" },
-                typescriptreact = { "biome", "prettierd" },
+                javascript = { "prettierd", "biome" },
+                typescript = { "prettierd", "biome" },
+                javascriptreact = { "prettierd", "biome" },
+                typescriptreact = { "prettierd", "biome" },
                 svelte = { "prettierd" },
-                json = { "biome" },
+                json = { "prettierd", "biome" },
                 lua = { "stylua" },
                 elixir = { "mix" },
                 heex = { "mix" },

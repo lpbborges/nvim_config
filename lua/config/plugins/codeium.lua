@@ -1,9 +1,6 @@
 return {
     "Exafunction/codeium.nvim",
     event = "InsertEnter",
-    dependencies = {
-        "nvim-lua/plenary.nvim",
-    },
     init = function()
         vim.api.nvim_set_hl(0, "CodeiumSuggestion", { link = "Comment", default = true })
     end,
