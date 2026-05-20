@@ -3,14 +3,27 @@ return {
     event = { "BufWritePre" },
     config = function()
         require("conform").setup {
+            formatters = {
+                prettier = {
+                    require_cwd = true,
+                    cwd = require("conform.util").root_file({
+                        ".prettierrc",
+                        ".prettierrc.json",
+                        ".prettierrc.js",
+                        ".prettierrc.yaml",
+                        ".prettierrc.yml",
+                        "prettier.config.js",
+                        "package.json",
+                    }),
+                },
+            },
             formatters_by_ft = {
-                -- Biome for JavaScript ecosystem
-                javascript = { "prettierd", "biome" },
-                typescript = { "prettierd", "biome" },
-                javascriptreact = { "prettierd", "biome" },
-                typescriptreact = { "prettierd", "biome" },
-                svelte = { "prettierd" },
-                json = { "prettierd", "biome" },
+                javascript = { "prettier", "biome", stop_after_first = true },
+                typescript = { "prettier", "biome", stop_after_first = true },
+                javascriptreact = { "prettier", "biome", stop_after_first = true },
+                typescriptreact = { "prettier", "biome", stop_after_first = true },
+                svelte = { "prettier" },
+                json = { "prettier", "biome", stop_after_first = true },
                 lua = { "stylua" },
                 elixir = { "mix" },
                 heex = { "mix" },
