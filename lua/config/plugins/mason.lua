@@ -39,8 +39,8 @@ return {
                         end
 
                         local cwd = vim.fn.getcwd()
-                        local first_buffer = vim.api.nvim_list_bufs()[1]
-                        local buf_dir = first_buffer and vim.fs.dirname(vim.api.nvim_buf_get_name(first_buffer)) or ""
+                        local current_file = vim.api.nvim_buf_get_name(0)
+                        local buf_dir = current_file ~= "" and vim.fs.dirname(current_file) or ""
                         local has_config = has_eslint_config(cwd) or has_eslint_config(buf_dir)
 
                         if has_config then
@@ -74,11 +74,6 @@ return {
                             },
                             init_options = {
                                 userLanguages = { heex = "html", elixir = "html" },
-                            },
-                            settings = {
-                                tailwindCSS = {
-                                    includeLanguages = { heex = "html", elixir = "html" },
-                                },
                             },
                         }
                     end,

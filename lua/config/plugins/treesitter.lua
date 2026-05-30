@@ -17,8 +17,6 @@ return {
                 "markdown_inline",
                 "tsx",
                 "typescript",
-                "vim",
-                "vimdoc",
                 "query",
                 "svelte",
                 "python",
@@ -30,17 +28,5 @@ return {
                 enable = true,
             },
         }
-
-        vim.api.nvim_create_autocmd("FileType", {
-            callback = function(args)
-                local buf = args.buf
-                local ft = vim.bo[buf].filetype
-                if ft == "" then return end
-                local ok = pcall(vim.treesitter.start, buf)
-                if not ok then
-                    vim.treesitter.stop(buf)
-                end
-            end,
-        })
     end,
 }

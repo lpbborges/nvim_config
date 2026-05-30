@@ -29,8 +29,8 @@ local function open_preview(filepath)
     vim.wo[preview_win].signcolumn = "no"
     vim.wo[preview_win].statusline = " Markdown Preview"
 
-    -- Run glow in the terminal buffer
-    vim.fn.termopen("glow -s dark " .. vim.fn.shellescape(filepath))
+    local theme = vim.o.background == "light" and "light" or "dark"
+    vim.fn.termopen("glow -s " .. theme .. " " .. vim.fn.shellescape(filepath))
 
     -- Return focus to the markdown buffer
     vim.cmd("wincmd p")
@@ -43,8 +43,9 @@ local function refresh_preview(filepath)
     if old_buf and vim.api.nvim_buf_is_valid(old_buf) then
         vim.api.nvim_buf_delete(old_buf, { force = true })
     end
+    local theme = vim.o.background == "light" and "light" or "dark"
     vim.api.nvim_buf_call(preview_buf, function()
-        vim.fn.termopen("glow -s dark " .. vim.fn.shellescape(filepath))
+        vim.fn.termopen("glow -s " .. theme .. " " .. vim.fn.shellescape(filepath))
     end)
 end
 

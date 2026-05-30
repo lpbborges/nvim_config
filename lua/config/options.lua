@@ -47,9 +47,24 @@ set.formatoptions:remove { "c", "r", "o" }
 set.isfname:append "@-@"
 set.shortmess:append "c"
 
+set.foldmethod = "expr"
+set.foldexpr = "nvim_treesitter#foldexpr()"
+set.foldenable = false
+
+-- trim trailing whitespace on save (separate from conform)
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*",
+    callback = function()
+        if not vim.g.disable_autoformat then
+            local save_view = vim.fn.winsaveview()
+            vim.cmd([[%s/\s\+$//e]])
+            vim.fn.winrestview(save_view)
+        end
+    end,
+})
+
 local default_notify = vim.notify
 
--- skip annoying messages
 vim.notify = function(msg, level, opts)
     if msg and msg:match "skipping file refresh due to debounce" then
         return
