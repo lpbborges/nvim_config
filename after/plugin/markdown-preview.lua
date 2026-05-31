@@ -23,7 +23,6 @@ local function open_preview(filepath)
     preview_buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_win_set_buf(preview_win, preview_buf)
 
-    -- Style the preview window
     vim.wo[preview_win].number = false
     vim.wo[preview_win].relativenumber = false
     vim.wo[preview_win].signcolumn = "no"
@@ -32,7 +31,6 @@ local function open_preview(filepath)
     local theme = vim.o.background == "light" and "light" or "dark"
     vim.fn.termopen("glow -s " .. theme .. " " .. vim.fn.shellescape(filepath))
 
-    -- Return focus to the markdown buffer
     vim.cmd("wincmd p")
 end
 
@@ -67,37 +65,26 @@ local function toggle_preview()
     end
 end
 
-return {
-    dir = vim.fn.stdpath("config"),
-    name = "markdown-preview",
-    lazy = true,
-    ft = "markdown",
-    config = function()
-        -- Keybind
-        vim.keymap.set("n", "<leader>mp", toggle_preview, {
-            desc = "Toggle markdown preview",
-            silent = true,
-        })
+vim.keymap.set("n", "<leader>mp", toggle_preview, {
+    desc = "Toggle markdown preview",
+    silent = true,
+})
 
-        -- Auto-refresh on save
-        vim.api.nvim_create_autocmd("BufWritePost", {
-            pattern = "*.md",
-            callback = function()
-                if preview_win and vim.api.nvim_win_is_valid(preview_win) then
-                    if vim.api.nvim_get_current_buf() == source_buf then
-                        refresh_preview(vim.fn.expand("%:p"))
-                    end
-                end
-            end,
-        })
-
-        -- Clean up if preview window is closed manually
-        vim.api.nvim_create_autocmd("WinClosed", {
-            callback = function(args)
-                if tonumber(args.match) == preview_win then
-                    close_preview()
-                end
-            end,
-        })
+vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = "*.md",
+    callback = function()
+        if preview_win and vim.api.nvim_win_is_valid(preview_win) then
+            if vim.api.nvim_get_current_buf() == source_buf then
+                refresh_preview(vim.fn.expand("%:p"))
+            end
+        end
     end,
-}
+})
+
+vim.api.nvim_create_autocmd("WinClosed", {
+    callback = function(args)
+        if tonumber(args.match) == preview_win then
+            close_preview()
+        end
+    end,
+})

@@ -1,7 +1,6 @@
 local set = vim.opt
 
 set.backup = false
-set.breakindent = true
 set.clipboard = "unnamedplus"
 set.cmdheight = 1
 set.completeopt = { "menuone", "noselect" }
@@ -10,17 +9,16 @@ set.conceallevel = 0
 set.expandtab = true
 set.fileencoding = "utf-8"
 set.guicursor = "a:blinkon0"
-set.guifont = "0xProto:h17"
 set.hlsearch = false
 set.ignorecase = true
 set.incsearch = true
 set.inccommand = "split"
 set.laststatus = 3
-set.linebreak = true
+
 set.number = true
 set.pumheight = 10
 set.relativenumber = true
-set.ruler = false
+
 set.scrolloff = 8
 set.shiftwidth = 4
 set.showcmd = false
@@ -48,8 +46,9 @@ set.isfname:append "@-@"
 set.shortmess:append "c"
 
 set.foldmethod = "expr"
-set.foldexpr = "nvim_treesitter#foldexpr()"
-set.foldenable = false
+set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+set.foldlevel = 99
+set.foldenable = true
 
 -- trim trailing whitespace on save (separate from conform)
 vim.api.nvim_create_autocmd("BufWritePre", {
