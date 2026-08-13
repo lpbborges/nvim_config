@@ -40,14 +40,15 @@ Personal Neovim configuration built on [lazy.nvim](https://github.com/folke/lazy
 | [Undotree](https://github.com/mbbill/undotree) | Undo history visualizer |
 | [mini.statusline](https://github.com/echasnovski/mini.statusline) | Statusline |
 | [autopairs](https://github.com/windwp/nvim-autopairs) + autotag | Auto-close brackets/tags |
-| [markdown-preview](https://github.com/iamcco/markdown-preview.nvim) | Live Markdown preview |
+| markdown-preview (custom, `glow`-based) | Live Markdown preview — see `after/plugin/markdown-preview.lua` |
 | [lazydev.nvim](https://github.com/folke/lazydev.nvim) | Lua development (Neovim API types) |
+| [which-key.nvim](https://github.com/folke/which-key.nvim) | Leader-key hints/discoverability |
 
 ## LSP Servers
 
 Installed automatically via Mason: `bashls`, `cssls`, `elixirls`, `eslint`, `html`, `jsonls`, `lua_ls`, `pyright`, `tailwindcss`, `ts_ls`, `yamlls`, `ruby_lsp`.
 
-ESLint only activates when an `.eslintrc*` or `eslint.config.*` file is present in the project.
+ESLint only activates when an `.eslintrc*` or `eslint.config.*` file is present in the project (`root_dir` resolver, see `lua/config/plugins/mason.lua`).
 
 ## Formatters
 
@@ -55,8 +56,8 @@ Managed by conform.nvim, installed via mason-tool-installer:
 
 | Formatter | Languages |
 |---|---|
-| [biome](https://biomejs.dev/) | JS, TS, JSX, TSX, JSON |
-| [prettierd](https://github.com/fsouza/prettierd) | Svelte, TS fallback |
+| [prettierd](https://github.com/fsouza/prettierd) | JS, TS, JSX, TSX, JSON, Svelte (tried first) |
+| [biome](https://biomejs.dev/) | JS, TS, JSX, TSX, JSON (fallback) |
 | [stylua](https://github.com/JohnnyMorganz/StyLua) | Lua |
 | `mix format` | Elixir, HEEx |
 | [black](https://github.com/psf/black) + [isort](https://pycqa.github.io/isort/) | Python |
@@ -86,7 +87,8 @@ Leader key: `<Space>`
 | `<leader>pf` | Find files (git root) |
 | `<leader>fr` | Recent files |
 | `<leader>fb` | Open buffers |
-| `<leader>fgi` | Git files |
+| `<leader>fG` | Git files |
+| `<leader>fg` | Live multi-grep (pattern, then `  ` + glob) |
 | `<leader>ps` | Live grep (git root) |
 | `<leader>fd` | Workspace diagnostics |
 | `<leader>en` | Browse Neovim config files |
@@ -96,8 +98,8 @@ Leader key: `<Space>`
 
 | Key | Action |
 |---|---|
-| `<S-m>` | Add file to Harpoon list |
-| `<TAB>` | Toggle Harpoon menu |
+| `<leader>a` | Add file to Harpoon list |
+| `<C-e>` | Toggle Harpoon menu |
 | `<leader>1-4` | Jump to Harpoon file 1–4 |
 
 ### LSP
@@ -131,11 +133,12 @@ Leader key: `<Space>`
 
 ### Editing
 
+`clipboard = unnamedplus` is set, so plain `y`/`d`/`p` already use the system clipboard.
+
 | Key | Action |
 |---|---|
 | `<leader>f` | Format buffer (or selection) |
 | `<leader>tf` | Toggle auto-format on save |
-| `<leader>y` / `<leader>Y` | Yank to system clipboard |
 | `<leader>d` | Delete to void register |
 | `J` / `K` (visual) | Move selected lines down / up |
 | `<` / `>` (visual) | Indent and stay in visual |
