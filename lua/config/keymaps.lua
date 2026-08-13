@@ -7,20 +7,20 @@ vim.g.maplocalleader = " "
 
 -- Normal
 keymap("n", "<leader>pv", vim.cmd.Ex, { desc = "Open file explorer (netrw)" })
-keymap("n", "J", "mzJ`z")
-keymap("n", "<C-d>", "<C-d>zz")
-keymap("n", "<C-u>", "<C-u>zz")
-keymap("n", "n", "nzzzv")
-keymap("n", "N", "Nzzzv")
-keymap("n", "*", "*zz", opts)
-keymap("n", "#", "#zz", opts)
-keymap("n", "g*", "g*zz", opts)
-keymap("n", "g#", "g#zz", opts)
-keymap({ "n", "v" }, "<S-h>", "^", opts)
-keymap({ "n", "v" }, "<S-l>", "g_", opts)
+keymap("n", "J", "mzJ`z", { desc = "Join lines and keep cursor" })
+keymap("n", "<C-d>", "<C-d>zz", { desc = "Half page down and center" })
+keymap("n", "<C-u>", "<C-u>zz", { desc = "Half page up and center" })
+keymap("n", "n", "nzzzv", { desc = "Next search result and center" })
+keymap("n", "N", "Nzzzv", { desc = "Prev search result and center" })
+keymap("n", "*", "*zz", { desc = "Search word under cursor and center" })
+keymap("n", "#", "#zz", { desc = "Search word backwards and center" })
+keymap("n", "g*", "g*zz", { desc = "Search word without boundary and center" })
+keymap("n", "g#", "g#zz", { desc = "Search word backwards without boundary and center" })
+keymap({ "n", "v" }, "<S-h>", "^", { desc = "Go to start of line" })
+keymap({ "n", "v" }, "<S-l>", "g_", { desc = "Go to end of line" })
 keymap("n", "Q", "<nop>")
-keymap("n", "<C-n>", "<cmd>cnext<CR>", opts)
-keymap("n", "<C-p>", "<cmd>cprev<CR>", opts)
+keymap("n", "<C-n>", "<cmd>cnext<CR>", { desc = "Next quickfix" })
+keymap("n", "<C-p>", "<cmd>cprev<CR>", { desc = "Prev quickfix" })
 
 keymap({ "x", "v", "n" }, "<leader>f", function()
     require("conform").format({ async = true }, function(err)
@@ -72,19 +72,19 @@ keymap("n", "<leader>cP", function()
 end, { desc = "Copy Absolute Path" })
 
 -- Visual --
-keymap("v", "J", ":m '>+1<CR>gv=gv")
-keymap("v", "K", ":m '<-2<CR>gv=gv")
+keymap("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move block down" })
+keymap("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move block up" })
 
 -- Stay in indent mode
-keymap("v", "<", "<gv", opts)
-keymap("v", ">", ">gv", opts)
+keymap("v", "<", "<gv", { desc = "Indent left" })
+keymap("v", ">", ">gv", { desc = "Indent right" })
 
 -- Insert --
 keymap("i", "<C-c>", "<Esc>", opts)
 
 -- Visual Block --
 -- greatest remap ever
-keymap("x", "p", [["_dP]])
+keymap("x", "p", [["_dP]], { desc = "Paste without yanking" })
 keymap("x", "g/", "<Esc>/\\%V", { desc = "Search inside visual selection" })
 
 keymap("n", "<leader>gg", "<cmd>LazyGitCurrentFile<CR>", { desc = "LazyGit" })

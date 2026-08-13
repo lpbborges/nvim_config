@@ -3,17 +3,55 @@ return {
     version = "*",
     cmd = "Telescope",
     keys = {
-        "<leader>fd",
-        "<leader>ff",
-        "<leader>fb",
-        "<leader>fr",
-        "<leader>fG",
-        "<leader>fh",
-        "<leader>en",
-        "<leader>ep",
-        "<leader>pf",
-        "<leader>ps",
-        "<leader>fg",
+        { "<leader>fd", "<cmd>Telescope diagnostics<cr>", desc = "Workspace Diagnostics" },
+        { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+        { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find Buffers" },
+        { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
+        { "<leader>fG", "<cmd>Telescope git_files<cr>", desc = "Git Files" },
+        { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
+        { 
+            "<leader>en", 
+            function() 
+                require("telescope.builtin").find_files { cwd = vim.fn.stdpath "config" } 
+            end, 
+            desc = "Browse Neovim Config" 
+        },
+        { 
+            "<leader>ep", 
+            function() 
+                require("telescope.builtin").find_files { cwd = vim.fs.joinpath(vim.fn.stdpath "data", "lazy") } 
+            end, 
+            desc = "Browse Installed Plugins" 
+        },
+        { 
+            "<leader>pf", 
+            function()
+                local function get_git_root()
+                    local current_file_dir = vim.fn.expand "%:p:h"
+                    if current_file_dir == "" then return vim.fn.getcwd() end
+                    local git_dir = vim.fn.finddir(".git", current_file_dir .. ";")
+                    if git_dir ~= "" then return vim.fn.fnamemodify(git_dir, ":h") end
+                    return vim.fn.getcwd()
+                end
+                require("telescope.builtin").find_files { cwd = get_git_root() }
+            end, 
+            desc = "Find Files (Git Root)" 
+        },
+        { 
+            "<leader>ps", 
+            function()
+                local function get_git_root()
+                    local current_file_dir = vim.fn.expand "%:p:h"
+                    if current_file_dir == "" then return vim.fn.getcwd() end
+                    local git_dir = vim.fn.finddir(".git", current_file_dir .. ";")
+                    if git_dir ~= "" then return vim.fn.fnamemodify(git_dir, ":h") end
+                    return vim.fn.getcwd()
+                end
+                require("telescope.builtin").live_grep { cwd = get_git_root() }
+            end, 
+            desc = "Grep (Git Root)" 
+        },
+        { "<leader>fg", desc = "Multi Grep" },
     },
     dependencies = {
         { "nvim-lua/plenary.nvim" },
@@ -21,7 +59,6 @@ return {
     },
     config = function()
         local telescope = require "telescope"
-        local builtin = require "telescope.builtin"
 
         telescope.setup {
             pickers = {
@@ -40,45 +77,6 @@ return {
         }
 
         telescope.load_extension "fzf"
-
-        local function get_git_root()
-            local current_file_dir = vim.fn.expand "%:p:h"
-
-            if current_file_dir == "" then
-                return vim.fn.getcwd()
-            end
-
-            local git_dir = vim.fn.finddir(".git", current_file_dir .. ";")
-
-            if git_dir ~= "" then
-                return vim.fn.fnamemodify(git_dir, ":h")
-            end
-
-            return vim.fn.getcwd()
-        end
-
-        vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Workspace Diagnostics" })
-        vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
-        vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find Buffers" })
-        vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent Files" })
-        vim.keymap.set("n", "<leader>fG", builtin.git_files, { desc = "Git Files" })
-        vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help Tags" })
-        vim.keymap.set("n", "<leader>en", function()
-            builtin.find_files {
-                cwd = vim.fn.stdpath "config",
-            }
-        end, { desc = "Browse Neovim Config" })
-        vim.keymap.set("n", "<leader>ep", function()
-            builtin.find_files {
-                cwd = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
-            }
-        end, { desc = "Browse Installed Plugins" })
-        vim.keymap.set("n", "<leader>pf", function()
-            builtin.find_files { cwd = get_git_root() }
-        end, { desc = "Find Files (Git Root)" })
-        vim.keymap.set("n", "<leader>ps", function()
-            builtin.live_grep { cwd = get_git_root() }
-        end, { desc = "Grep (Git Root)" })
 
         require("config.telescope.multigrep").setup()
     end,
