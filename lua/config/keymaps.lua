@@ -6,7 +6,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Normal
-keymap("n", "<leader>pv", vim.cmd.Ex)
+keymap("n", "<leader>pv", vim.cmd.Ex, { desc = "Open file explorer (netrw)" })
 keymap("n", "J", "mzJ`z")
 keymap("n", "<C-d>", "<C-d>zz")
 keymap("n", "<C-u>", "<C-u>zz")
@@ -41,12 +41,9 @@ keymap("n", "<down>", '<cmd>echo "Use j to move!!"<CR>', opts)
 
 keymap("n", "<leader><leader>x", function()
     vim.cmd "so"
-end)
+end, { desc = "Source current file" })
 
--- next greatest remap ever : asbjornHaland
-keymap({ "n", "v" }, "<leader>y", [["+y]])
-keymap("n", "<leader>Y", [["+Y]])
-keymap({ "n", "v" }, "<leader>d", [["_d]])
+keymap({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void register" })
 
 keymap("n", "<leader>bb", "<cmd>b#<CR>", { desc = "Switch to previous buffer" })
 

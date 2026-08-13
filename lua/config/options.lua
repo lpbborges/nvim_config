@@ -36,14 +36,21 @@ set.title = true
 set.titlelen = 0
 set.undodir = os.getenv "HOME" .. "/.vim/undodir"
 set.undofile = true
-set.updatetime = 50
+set.updatetime = 250
 set.whichwrap = "bs<>[]hl"
 set.wrap = false
 set.writebackup = false
-vim.api.nvim_create_autocmd("BufEnter", {
+set.autoread = true
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "*",
     callback = function()
         vim.opt.formatoptions:remove { "c", "r", "o" }
     end,
+})
+
+-- pick up external edits (e.g. from an AI agent in another pane) on focus/buffer switch
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "TermLeave" }, {
+    command = "checktime",
 })
 set.isfname:append "@-@"
 set.shortmess:append "c"
