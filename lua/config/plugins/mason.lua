@@ -1,6 +1,7 @@
 return {
     {
         "williamboman/mason-lspconfig.nvim",
+        event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             "williamboman/mason.nvim",
             "neovim/nvim-lspconfig",
@@ -10,6 +11,52 @@ return {
             require("mason").setup {
                 ui = { border = "rounded" },
             }
+
+            local capabilities = require("blink.cmp").get_lsp_capabilities()
+            vim.lsp.config("*", { capabilities = capabilities })
+
+            local function has_eslint_config(dir)
+                if not dir or dir == "" then
+                    return nil
+                end
+                local patterns = { ".eslintrc*", "eslint.config.*" }
+                return vim.fs.find(patterns, { path = dir, upward = true })[1]
+            end
+
+            vim.lsp.config("eslint", {
+                root_dir = function(bufnr, on_dir)
+                    local cwd = vim.fn.getcwd()
+                    local buf_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+                    local config_file = has_eslint_config(buf_dir) or has_eslint_config(cwd)
+                    if config_file then
+                        on_dir(vim.fs.dirname(config_file))
+                    end
+                end,
+            })
+
+            vim.lsp.config("lua_ls", {
+                settings = {
+                    Lua = { workspace = { checkThirdParty = false } },
+                },
+            })
+
+            vim.lsp.config("tailwindcss", {
+                filetypes = {
+                    "html",
+                    "css",
+                    "scss",
+                    "javascript",
+                    "javascriptreact",
+                    "typescript",
+                    "typescriptreact",
+                    "svelte",
+                    "elixir",
+                    "heex",
+                },
+                init_options = {
+                    userLanguages = { heex = "html", elixir = "html" },
+                },
+            })
 
             require("mason-lspconfig").setup {
                 ensure_installed = {
@@ -25,58 +72,6 @@ return {
                     "ts_ls",
                     "yamlls",
                     "ruby_lsp",
-                },
-                handlers = {
-                    function(server_name)
-                        local capabilities = require("blink.cmp").get_lsp_capabilities()
-                        require("lspconfig")[server_name].setup { capabilities = capabilities }
-                    end,
-                    ["eslint"] = function()
-                        local function has_eslint_config(dir)
-                            if not dir or dir == "" then return nil end
-                            local Patterns = { ".eslintrc*", "eslint.config.*", ".eslintrc" }
-                            return vim.fs.find(Patterns, { path = dir, upward = true })[1]
-                        end
-
-                        local cwd = vim.fn.getcwd()
-                        local current_file = vim.api.nvim_buf_get_name(0)
-                        local buf_dir = current_file ~= "" and vim.fs.dirname(current_file) or ""
-                        local has_config = has_eslint_config(cwd) or has_eslint_config(buf_dir)
-
-                        if has_config then
-                            require("lspconfig").eslint.setup {
-                                capabilities = require("blink.cmp").get_lsp_capabilities(),
-                            }
-                        end
-                    end,
-                    ["lua_ls"] = function()
-                        require("lspconfig").lua_ls.setup {
-                            capabilities = require("blink.cmp").get_lsp_capabilities(),
-                            settings = {
-                                Lua = { workspace = { checkThirdParty = false } },
-                            },
-                        }
-                    end,
-                    ["tailwindcss"] = function()
-                        require("lspconfig").tailwindcss.setup {
-                            capabilities = require("blink.cmp").get_lsp_capabilities(),
-                            filetypes = {
-                                "html",
-                                "css",
-                                "scss",
-                                "javascript",
-                                "javascriptreact",
-                                "typescript",
-                                "typescriptreact",
-                                "svelte",
-                                "elixir",
-                                "heex",
-                            },
-                            init_options = {
-                                userLanguages = { heex = "html", elixir = "html" },
-                            },
-                        }
-                    end,
                 },
             }
 
