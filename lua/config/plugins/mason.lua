@@ -98,11 +98,11 @@ return {
                     end
 
                     map("n", "K", vim.lsp.buf.hover, "Hover")
-                    map("n", "gd", vim.lsp.buf.definition, "Go to Definition")
+                    map("n", "gd", require("telescope.builtin").lsp_definitions, "Go to Definition")
                     map("n", "gD", vim.lsp.buf.declaration, "Go to Declaration")
-                    map("n", "gi", vim.lsp.buf.implementation, "Go to Implementation")
-                    map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
-                    map("n", "<leader>vrr", vim.lsp.buf.references, "References")
+                    map("n", "gi", require("telescope.builtin").lsp_implementations, "Go to Implementation")
+                    map("n", "gt", require("telescope.builtin").lsp_type_definitions, "Go to Type Definition")
+                    map("n", "<leader>vrr", require("telescope.builtin").lsp_references, "References")
                     map("n", "<leader>vrn", vim.lsp.buf.rename, "Rename")
                     map("i", "<C-h>", vim.lsp.buf.signature_help, "Signature Help")
                     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")

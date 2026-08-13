@@ -20,6 +20,7 @@ return {
                 "query",
                 "svelte",
                 "python",
+                "ruby",
             },
             highlight = {
                 enable = true,

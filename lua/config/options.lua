@@ -31,7 +31,6 @@ set.splitbelow = true
 set.splitright = true
 set.swapfile = false
 set.tabstop = 4
-set.termguicolors = true
 set.timeoutlen = 300
 set.title = true
 set.titlelen = 0
@@ -41,7 +40,11 @@ set.updatetime = 50
 set.whichwrap = "bs<>[]hl"
 set.wrap = false
 set.writebackup = false
-set.formatoptions:remove { "c", "r", "o" }
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        vim.opt.formatoptions:remove { "c", "r", "o" }
+    end,
+})
 set.isfname:append "@-@"
 set.shortmess:append "c"
 
@@ -71,3 +74,26 @@ vim.notify = function(msg, level, opts)
 
     default_notify(msg, level, opts)
 end
+
+-- Netrw: safe C mapping that validates window number to prevent E16
+-- Terminal escape sequences can produce huge v:count values, setting
+-- g:netrw_chgwin to an invalid window number (e.g. 999999999).
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "netrw",
+    callback = function()
+        local opts = { buffer = true, noremap = true, silent = true }
+        vim.keymap.set("n", "C", function()
+            local count = vim.v.count
+            if count > 0 then
+                if count > vim.fn.winnr("$") then
+                    vim.notify("Invalid window number: " .. count, vim.log.levels.ERROR)
+                    return
+                end
+                vim.g.netrw_chgwin = count
+            else
+                vim.g.netrw_chgwin = vim.fn.winnr()
+            end
+            vim.notify("editing window now set to window#" .. vim.g.netrw_chgwin)
+        end, opts)
+    end,
+})

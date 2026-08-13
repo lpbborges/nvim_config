@@ -36,11 +36,13 @@ vim.api.nvim_create_autocmd("FileType", {
             vim.opt_local.softtabstop = 4
             vim.opt_local.tabstop = 4
         elseif filetype == "heex" or filetype == "eelixir" then
+            vim.treesitter.start()
             vim.opt_local.expandtab = true
             vim.opt_local.shiftwidth = 2
             vim.opt_local.softtabstop = 2
             vim.opt_local.tabstop = 2
         elseif filetype == "elixir" then
+            vim.treesitter.start()
             vim.opt_local.expandtab = true
             vim.opt_local.shiftwidth = 2
             vim.opt_local.softtabstop = 2

@@ -32,7 +32,6 @@ Personal Neovim configuration built on [lazy.nvim](https://github.com/folke/lazy
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP configuration |
 | [blink.cmp](https://github.com/saghen/blink.cmp) | Completion engine |
 | [conform.nvim](https://github.com/stevearc/conform.nvim) | Formatting |
-| [Codeium](https://github.com/Exafunction/codeium.nvim) | AI code suggestions |
 | [Telescope](https://github.com/nvim-telescope/telescope.nvim) + fzf-native | Fuzzy finding |
 | [Harpoon 2](https://github.com/ThePrimeagen/harpoon) | File bookmarking |
 | [Gitsigns](https://github.com/lewis6991/gitsigns.nvim) | Git decorations & hunk actions |
@@ -143,13 +142,6 @@ Leader key: `<Space>`
 | `p` (visual block) | Paste without overwriting register |
 | `<leader>u` | Toggle Undotree |
 
-### Codeium (AI)
-
-| Key | Action |
-|---|---|
-| `<C-g>` | Accept suggestion |
-| `<M-]>` / `<M-[>` | Next / prev suggestion |
-| `<C-]>` | Dismiss suggestion |
 
 ### Misc
 
