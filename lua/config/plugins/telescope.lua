@@ -1,6 +1,20 @@
 return {
     "nvim-telescope/telescope.nvim",
     version = "*",
+    cmd = "Telescope",
+    keys = {
+        "<leader>fd",
+        "<leader>ff",
+        "<leader>fb",
+        "<leader>fr",
+        "<leader>fG",
+        "<leader>fh",
+        "<leader>en",
+        "<leader>ep",
+        "<leader>pf",
+        "<leader>ps",
+        "<leader>fg",
+    },
     dependencies = {
         { "nvim-lua/plenary.nvim" },
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -47,18 +61,18 @@ return {
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
         vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find Buffers" })
         vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent Files" })
-        vim.keymap.set("n", "<leader>fgi", builtin.git_files, { desc = "Git Files" })
-        vim.keymap.set("n", "<leader>fh", builtin.help_tags)
+        vim.keymap.set("n", "<leader>fG", builtin.git_files, { desc = "Git Files" })
+        vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help Tags" })
         vim.keymap.set("n", "<leader>en", function()
             builtin.find_files {
                 cwd = vim.fn.stdpath "config",
             }
-        end)
+        end, { desc = "Browse Neovim Config" })
         vim.keymap.set("n", "<leader>ep", function()
             builtin.find_files {
                 cwd = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
             }
-        end)
+        end, { desc = "Browse Installed Plugins" })
         vim.keymap.set("n", "<leader>pf", function()
             builtin.find_files { cwd = get_git_root() }
         end, { desc = "Find Files (Git Root)" })
