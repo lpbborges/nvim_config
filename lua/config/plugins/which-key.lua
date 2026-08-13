@@ -10,7 +10,7 @@ return {
             { "<leader>f", group = "Find/Telescope", icon = " " },
             { "<leader>g", group = "Git", icon = "󰊢 " },
             { "<leader>p", group = "Project", icon = "󰏖 " },
-            { "<leader>t", group = "Toggle", icon = " " },
+            { "<leader>t", group = "Test/Toggle", icon = " " },
             { "<leader>v", group = "LSP/Diagnostics", icon = " " },
         },
     },

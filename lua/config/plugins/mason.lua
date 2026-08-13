@@ -40,6 +40,10 @@ return {
                 },
             })
 
+            vim.lsp.config("ruby_lsp", {
+                cmd = { "bash", "-lc", "ruby-lsp" },
+            })
+
             vim.lsp.config("tailwindcss", {
                 filetypes = {
                     "html",
