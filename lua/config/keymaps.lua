@@ -22,7 +22,7 @@ keymap("n", "Q", "<nop>")
 keymap("n", "<C-n>", "<cmd>cnext<CR>", { desc = "Next quickfix" })
 keymap("n", "<C-p>", "<cmd>cprev<CR>", { desc = "Prev quickfix" })
 
-keymap({ "x", "v", "n" }, "<leader>f", function()
+keymap({ "n", "v" }, "<leader>cf", function()
     require("conform").format({ async = true }, function(err)
         if not err then
             local mode = vim.api.nvim_get_mode().mode
@@ -31,7 +31,7 @@ keymap({ "x", "v", "n" }, "<leader>f", function()
             end
         end
     end)
-end, { desc = "Format code" })
+end, { desc = "Format Code" })
 
 -- Block to use arrow keys
 keymap("n", "<left>", '<cmd>echo "Use h to move!!"<CR>', opts)

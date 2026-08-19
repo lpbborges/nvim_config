@@ -1,9 +1,10 @@
 return {
     {
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason-lspconfig.nvim",
         event = { "BufReadPre", "BufNewFile" },
+        cmd = { "Mason", "MasonInstall", "MasonUpdate", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
         dependencies = {
-            "williamboman/mason.nvim",
+            "mason-org/mason.nvim",
             "neovim/nvim-lspconfig",
             "saghen/blink.cmp",
         },
@@ -19,8 +20,9 @@ return {
                 if not dir or dir == "" then
                     return nil
                 end
-                local patterns = { ".eslintrc*", "eslint.config.*" }
-                return vim.fs.find(patterns, { path = dir, upward = true })[1]
+                return vim.fs.find(function(name)
+                    return name:match "^%.eslintrc" ~= nil or name:match "^eslint%.config%." ~= nil
+                end, { path = dir, upward = true })[1]
             end
 
             vim.lsp.config("eslint", {
@@ -79,16 +81,9 @@ return {
                 },
             }
 
-            -- Diagnostic keymaps (global — work without an attached LSP)
-            vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, { noremap = true, silent = true })
-            vim.keymap.set("n", "[d", function()
-                vim.diagnostic.jump { count = -1 }
-            end, { noremap = true, silent = true })
-            vim.keymap.set("n", "]d", function()
-                vim.diagnostic.jump { count = 1 }
-            end, { noremap = true, silent = true })
-
-            -- LSP keymaps — buffer-local, set when a server attaches
+            -- LSP keymaps — buffer-local, set when a server attaches.
+            -- K, grn, gra, grr, gri, grt, <C-s> (insert) come from Neovim's built-in
+            -- 0.11+ defaults; only the Telescope-picker-backed variants are added here.
             vim.api.nvim_create_autocmd("LspAttach", {
                 callback = function(args)
                     local buf = args.buf
@@ -96,16 +91,11 @@ return {
                         vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = buf, desc = desc })
                     end
 
-                    map("n", "K", vim.lsp.buf.hover, "Hover")
                     map("n", "gd", require("telescope.builtin").lsp_definitions, "Go to Definition")
                     map("n", "gD", vim.lsp.buf.declaration, "Go to Declaration")
                     map("n", "gi", require("telescope.builtin").lsp_implementations, "Go to Implementation")
                     map("n", "gt", require("telescope.builtin").lsp_type_definitions, "Go to Type Definition")
                     map("n", "<leader>vrr", require("telescope.builtin").lsp_references, "References")
-                    map("n", "<leader>vrn", vim.lsp.buf.rename, "Rename")
-                    map("i", "<C-h>", vim.lsp.buf.signature_help, "Signature Help")
-                    map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
-                    map("v", "<leader>ca", vim.lsp.buf.code_action, "Code Action (range)")
                 end,
             })
 

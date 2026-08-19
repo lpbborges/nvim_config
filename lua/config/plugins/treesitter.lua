@@ -1,6 +1,7 @@
 local ensure_installed = {
     "bash",
     "c",
+    "eex",
     "elixir",
     "heex",
     "html",
@@ -48,6 +49,7 @@ return {
             pattern = filetypes,
             callback = function()
                 vim.treesitter.start()
+                vim.wo.foldmethod = "expr"
                 vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
                 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end,

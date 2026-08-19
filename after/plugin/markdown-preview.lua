@@ -18,7 +18,7 @@ local function open_preview(filepath)
     close_preview()
     source_buf = vim.api.nvim_get_current_buf()
 
-    vim.cmd("botright vsplit")
+    vim.cmd "botright vsplit"
     preview_win = vim.api.nvim_get_current_win()
     preview_buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_win_set_buf(preview_win, preview_buf)
@@ -29,9 +29,9 @@ local function open_preview(filepath)
     vim.wo[preview_win].statusline = " Markdown Preview"
 
     local theme = vim.o.background == "light" and "light" or "dark"
-    vim.fn.termopen("glow -s " .. theme .. " " .. vim.fn.shellescape(filepath))
+    vim.fn.jobstart({ "glow", "-s", theme, filepath }, { term = true })
 
-    vim.cmd("wincmd p")
+    vim.cmd "wincmd p"
 end
 
 local function refresh_preview(filepath)
@@ -43,7 +43,7 @@ local function refresh_preview(filepath)
     end
     local theme = vim.o.background == "light" and "light" or "dark"
     vim.api.nvim_buf_call(preview_buf, function()
-        vim.fn.termopen("glow -s " .. theme .. " " .. vim.fn.shellescape(filepath))
+        vim.fn.jobstart({ "glow", "-s", theme, filepath }, { term = true })
     end)
 end
 
@@ -53,10 +53,15 @@ local function toggle_preview()
         return
     end
 
+    if vim.fn.executable "glow" == 0 then
+        vim.notify("glow is not installed or not on PATH", vim.log.levels.WARN)
+        return
+    end
+
     if preview_win and vim.api.nvim_win_is_valid(preview_win) then
         close_preview()
     else
-        local filepath = vim.fn.expand("%:p")
+        local filepath = vim.fn.expand "%:p"
         if filepath == "" then
             vim.notify("No file path — save the buffer first", vim.log.levels.WARN)
             return
@@ -75,7 +80,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     callback = function()
         if preview_win and vim.api.nvim_win_is_valid(preview_win) then
             if vim.api.nvim_get_current_buf() == source_buf then
-                refresh_preview(vim.fn.expand("%:p"))
+                refresh_preview(vim.fn.expand "%:p")
             end
         end
     end,

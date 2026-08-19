@@ -1,17 +1,15 @@
 local set = vim.opt
 
-set.backup = false
 set.clipboard = "unnamedplus"
 set.cmdheight = 1
 set.completeopt = { "menuone", "noselect" }
 set.colorcolumn = { "80", "120" }
 set.conceallevel = 0
 set.expandtab = true
-set.fileencoding = "utf-8"
-set.guicursor = "a:blinkon0"
+set.guicursor:append "a:blinkon0"
+set.guicursor:append "i-ci-ve:block-blinkon0"
 set.hlsearch = false
 set.ignorecase = true
-set.incsearch = true
 set.inccommand = "split"
 set.laststatus = 3
 
@@ -44,7 +42,7 @@ set.autoread = true
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "*",
     callback = function()
-        vim.opt.formatoptions:remove { "c", "r", "o" }
+        vim.opt_local.formatoptions:remove { "c", "r", "o" }
     end,
 })
 
@@ -55,18 +53,20 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "TermLeave" }, {
 set.isfname:append "@-@"
 set.shortmess:append "c"
 
-set.foldmethod = "expr"
-set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 set.foldlevel = 99
 set.foldenable = true
 
 -- trim trailing whitespace on save (separate from conform)
+-- excludes markdown: two trailing spaces there are a hard line break
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     callback = function()
+        if vim.bo.filetype == "markdown" then
+            return
+        end
         if not vim.g.disable_autoformat then
             local save_view = vim.fn.winsaveview()
-            vim.cmd([[%s/\s\+$//e]])
+            vim.cmd [[%s/\s\+$//e]]
             vim.fn.winrestview(save_view)
         end
     end,
@@ -92,7 +92,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.keymap.set("n", "C", function()
             local count = vim.v.count
             if count > 0 then
-                if count > vim.fn.winnr("$") then
+                if count > vim.fn.winnr "$" then
                     vim.notify("Invalid window number: " .. count, vim.log.levels.ERROR)
                     return
                 end

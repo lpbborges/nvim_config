@@ -28,7 +28,7 @@ return {
                         return "]c"
                     end
                     vim.schedule(function()
-                        gs.next_hunk()
+                        gs.nav_hunk "next"
                     end)
                     return "<Ignore>"
                 end, { expr = true })
@@ -38,7 +38,7 @@ return {
                         return "[c"
                     end
                     vim.schedule(function()
-                        gs.prev_hunk()
+                        gs.nav_hunk "prev"
                     end)
                     return "<Ignore>"
                 end, { expr = true })
@@ -55,7 +55,7 @@ return {
                 end, { desc = "Reset Selection" })
                 map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage Buffer" })
                 map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset Buffer" })
-                map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo Stage Hunk" })
+                map("n", "<leader>hu", gs.stage_hunk, { desc = "Undo Stage Hunk (toggle)" })
                 map("n", "<leader>hd", gs.diffthis, { desc = "Diff This" })
                 map("n", "<leader>hD", function()
                     gs.diffthis "~"

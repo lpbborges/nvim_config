@@ -1,10 +1,3 @@
-vim.filetype.add({
-    extension = {
-        heex = "heex",
-        eex = "eex",
-    },
-})
-
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "heex", "eelixir", "elixir" },
     callback = function()
