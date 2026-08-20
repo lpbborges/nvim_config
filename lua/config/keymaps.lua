@@ -105,5 +105,8 @@ keymap("n", "<leader>u", "<cmd>packadd nvim.undotree | Undotree<cr>", { desc = "
 
 -- Native Treesitter Smart Selection (Neovim 0.12+)
 keymap({ "n", "x" }, "<CR>", function()
-    vim.treesitter.select()
-end, { desc = "Smart Selection (Treesitter)" })
+    vim.treesitter.select "parent"
+end, { desc = "Smart Selection (Treesitter Expand)" })
+keymap("x", "<BS>", function()
+    vim.treesitter.select "child"
+end, { desc = "Smart Selection (Treesitter Shrink)" })
