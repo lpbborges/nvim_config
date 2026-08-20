@@ -99,3 +99,11 @@ keymap("n", "<leader>tf", function()
         vim.notify("Auto-format on save: OFF", vim.log.levels.INFO)
     end
 end, { desc = "Toggle auto-format on save" })
+
+-- Native Undotree (Neovim 0.12+)
+keymap("n", "<leader>u", "<cmd>packadd nvim.undotree | Undotree<cr>", { desc = "Toggle Undotree (Native)" })
+
+-- Native Treesitter Smart Selection (Neovim 0.12+)
+keymap({ "n", "x" }, "<C-Space>", function()
+    vim.treesitter.select()
+end, { desc = "Smart Selection (Treesitter)" })
