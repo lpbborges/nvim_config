@@ -12,6 +12,7 @@ set.hlsearch = false
 set.ignorecase = true
 set.inccommand = "split"
 set.laststatus = 3
+set.statusline = " %f %m%r %= %l:%c "
 
 set.number = true
 set.pumheight = 10

@@ -3,7 +3,6 @@ return {
     dependencies = {
         "nvim-neotest/nvim-nio",
         "nvim-lua/plenary.nvim",
-        "antoinemadec/FixCursorHold.nvim",
         "nvim-treesitter/nvim-treesitter",
         -- Adapters for JS/TS, Ruby, Elixir, Python
         "nvim-neotest/neotest-jest",

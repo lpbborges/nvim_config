@@ -91,11 +91,11 @@ return {
                         vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = buf, desc = desc })
                     end
 
-                    map("n", "gd", require("telescope.builtin").lsp_definitions, "Go to Definition")
+                    map("n", "gd", vim.lsp.buf.definition, "Go to Definition")
                     map("n", "gD", vim.lsp.buf.declaration, "Go to Declaration")
-                    map("n", "gi", require("telescope.builtin").lsp_implementations, "Go to Implementation")
-                    map("n", "gt", require("telescope.builtin").lsp_type_definitions, "Go to Type Definition")
-                    map("n", "<leader>vrr", require("telescope.builtin").lsp_references, "References")
+                    map("n", "gi", vim.lsp.buf.implementation, "Go to Implementation")
+                    map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
+                    map("n", "<leader>vrr", vim.lsp.buf.references, "References")
                 end,
             })
 
