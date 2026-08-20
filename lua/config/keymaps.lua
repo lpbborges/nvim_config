@@ -104,6 +104,6 @@ end, { desc = "Toggle auto-format on save" })
 keymap("n", "<leader>u", "<cmd>packadd nvim.undotree | Undotree<cr>", { desc = "Toggle Undotree (Native)" })
 
 -- Native Treesitter Smart Selection (Neovim 0.12+)
-keymap({ "n", "x" }, "<C-Space>", function()
+keymap({ "n", "x" }, "<CR>", function()
     vim.treesitter.select()
 end, { desc = "Smart Selection (Treesitter)" })
