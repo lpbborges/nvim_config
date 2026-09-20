@@ -15,6 +15,7 @@ return {
         { "<leader>fG", "<cmd>Telescope git_files<cr>", desc = "Git Files" },
         { "<leader>fm", "<cmd>Telescope marks<cr>", desc = "Find Marks" },
         { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
+        { "<leader>fg", desc = "Multi Grep" },
         {
             "<leader>en",
             function()
