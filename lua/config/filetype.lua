@@ -1,4 +1,7 @@
+local augroup = vim.api.nvim_create_augroup("UserFiletype", { clear = true })
+
 vim.api.nvim_create_autocmd("FileType", {
+    group = augroup,
     pattern = { "heex", "eelixir", "elixir" },
     callback = function()
         vim.opt_local.expandtab = true
@@ -9,6 +12,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+    group = augroup,
     pattern = "markdown",
     callback = function()
         vim.opt_local.expandtab = true
@@ -19,6 +23,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+    group = augroup,
     pattern = "qf",
     callback = function()
         vim.opt_local.buflisted = true

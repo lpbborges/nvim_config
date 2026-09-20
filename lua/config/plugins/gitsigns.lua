@@ -55,7 +55,6 @@ return {
                 end, { desc = "Reset Selection" })
                 map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage Buffer" })
                 map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset Buffer" })
-                map("n", "<leader>hu", gs.stage_hunk, { desc = "Undo Stage Hunk (toggle)" })
                 map("n", "<leader>hd", gs.diffthis, { desc = "Diff This" })
                 map("n", "<leader>hD", function()
                     gs.diffthis "~"

@@ -2,7 +2,7 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
     },
     config = function()
         require("mason-tool-installer").setup {

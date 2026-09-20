@@ -40,7 +40,11 @@ set.whichwrap = "bs<>[]hl"
 set.wrap = false
 set.writebackup = false
 set.autoread = true
+
+local augroup = vim.api.nvim_create_augroup("UserOptions", { clear = true })
+
 vim.api.nvim_create_autocmd("FileType", {
+    group = augroup,
     pattern = "*",
     callback = function()
         vim.opt_local.formatoptions:remove { "c", "r", "o" }
@@ -49,6 +53,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- pick up external edits (e.g. from an AI agent in another pane) on focus/buffer switch
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "TermLeave" }, {
+    group = augroup,
     command = "checktime",
 })
 set.isfname:append "@-@"
@@ -60,6 +65,7 @@ set.foldenable = true
 -- trim trailing whitespace on save (separate from conform)
 -- excludes markdown: two trailing spaces there are a hard line break
 vim.api.nvim_create_autocmd("BufWritePre", {
+    group = augroup,
     pattern = "*",
     callback = function()
         if vim.bo.filetype == "markdown" then
@@ -67,7 +73,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         end
         if not vim.g.disable_autoformat then
             local save_view = vim.fn.winsaveview()
-            vim.cmd [[%s/\s\+$//e]]
+            vim.cmd [[keeppatterns %s/\s\+$//e]]
             vim.fn.winrestview(save_view)
         end
     end,
@@ -87,6 +93,7 @@ end
 -- Terminal escape sequences can produce huge v:count values, setting
 -- g:netrw_chgwin to an invalid window number (e.g. 999999999).
 vim.api.nvim_create_autocmd("FileType", {
+    group = augroup,
     pattern = "netrw",
     callback = function()
         local opts = { buffer = true, noremap = true, silent = true }
