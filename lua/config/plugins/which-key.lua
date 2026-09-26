@@ -6,10 +6,11 @@ return {
         spec = {
             { "<leader>b", group = "Buffer", icon = "󰓩 " },
             { "<leader>c", group = "Copy/Code", icon = "󰆏 " },
-            { "<leader>e", group = "Edit", icon = " " },
+            { "<leader>e", group = "Explore", icon = " " },
             { "<leader>f", group = "Find/Telescope", icon = " " },
             { "<leader>g", group = "Git", icon = "󰊢 " },
             { "<leader>h", group = "Git Hunk", icon = "󰊢 " },
+            { "<leader>m", group = "Markdown", icon = "󰍔 " },
             { "<leader>p", group = "Project", icon = "󰏖 " },
             { "<leader>t", group = "Test/Toggle", icon = " " },
         },

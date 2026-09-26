@@ -1,4 +1,4 @@
-local opts = { noremap = true, silent = true }
+local opts = { silent = true }
 local keymap = vim.keymap.set
 
 keymap("", "<Space>", "<Nop>", opts)
@@ -46,10 +46,10 @@ keymap("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
 keymap("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
 -- resize window
-keymap("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
-keymap("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
+keymap("n", "<C-Up>", "<cmd>resize +2<CR>", { desc = "Increase window height" })
+keymap("n", "<C-Down>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })
+keymap("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
+keymap("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
 
 keymap("n", "<leader>cp", function()
     local path = vim.fn.expand "%"
@@ -81,13 +81,8 @@ keymap("x", "g/", "<Esc>/\\%V", { desc = "Search inside visual selection" })
 
 -- Toggle auto-format on save
 keymap("n", "<leader>tf", function()
-    if vim.g.disable_autoformat then
-        vim.g.disable_autoformat = false
-        vim.notify("Auto-format on save: ON", vim.log.levels.INFO)
-    else
-        vim.g.disable_autoformat = true
-        vim.notify("Auto-format on save: OFF", vim.log.levels.INFO)
-    end
+    vim.g.disable_autoformat = not vim.g.disable_autoformat
+    vim.notify("Auto-format on save: " .. (vim.g.disable_autoformat and "OFF" or "ON"), vim.log.levels.INFO)
 end, { desc = "Toggle auto-format on save" })
 
 -- Native Undotree (Neovim 0.12+)

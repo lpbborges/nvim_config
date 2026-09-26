@@ -1,3 +1,11 @@
+-- Projects with a biome config are formatted by biome; everything else by prettierd.
+local function biome_or_prettierd(bufnr)
+    if vim.fs.root(bufnr, { "biome.json", "biome.jsonc" }) then
+        return { "biome" }
+    end
+    return { "prettierd" }
+end
+
 return {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -19,27 +27,25 @@ return {
             desc = "Format Code",
         },
     },
-    config = function()
-        require("conform").setup {
-            formatters_by_ft = {
-                javascript = { "prettierd", "biome", stop_after_first = true },
-                typescript = { "prettierd", "biome", stop_after_first = true },
-                javascriptreact = { "prettierd", "biome", stop_after_first = true },
-                typescriptreact = { "prettierd", "biome", stop_after_first = true },
-                svelte = { "prettierd" },
-                json = { "prettierd", "biome", stop_after_first = true },
-                lua = { "stylua" },
-                elixir = { "mix" },
-                heex = { "mix" },
-                eelixir = { "mix" },
-                python = { "isort", "black" },
-            },
-            format_on_save = function(bufnr)
-                if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-                    return
-                end
-                return { timeout_ms = 500, lsp_format = "fallback" }
-            end,
-        }
-    end,
+    opts = {
+        formatters_by_ft = {
+            javascript = biome_or_prettierd,
+            typescript = biome_or_prettierd,
+            javascriptreact = biome_or_prettierd,
+            typescriptreact = biome_or_prettierd,
+            json = biome_or_prettierd,
+            svelte = { "prettierd" },
+            lua = { "stylua" },
+            elixir = { "mix" },
+            heex = { "mix" },
+            eelixir = { "mix" },
+            python = { "isort", "black" },
+        },
+        format_on_save = function(bufnr)
+            if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                return
+            end
+            return { timeout_ms = 500, lsp_format = "fallback" }
+        end,
+    },
 }

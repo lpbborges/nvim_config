@@ -5,12 +5,10 @@ return {
         dependencies = {
             "mason-org/mason.nvim",
             "neovim/nvim-lspconfig",
+            -- loaded first so its plugin/ file sets completion capabilities on vim.lsp.config("*")
             "saghen/blink.cmp",
         },
         config = function()
-            local capabilities = require("blink.cmp").get_lsp_capabilities()
-            vim.lsp.config("*", { capabilities = capabilities })
-
             local function has_eslint_config(dir)
                 if not dir or dir == "" then
                     return nil
@@ -102,7 +100,7 @@ return {
                         [vim.diagnostic.severity.INFO] = "I",
                     },
                 },
-                virtual_text = false,
+                virtual_text = { current_line = true },
                 virtual_lines = false,
                 update_in_insert = false,
                 underline = true,

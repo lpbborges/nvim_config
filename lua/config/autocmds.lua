@@ -24,15 +24,16 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "TermLeave" }, {
 vim.api.nvim_create_autocmd("BufWritePre", {
     group = augroup,
     pattern = "*",
-    callback = function()
-        if vim.bo.filetype == "markdown" then
+    callback = function(args)
+        if vim.bo[args.buf].filetype == "markdown" then
             return
         end
-        if not vim.g.disable_autoformat then
-            local save_view = vim.fn.winsaveview()
-            vim.cmd [[keeppatterns %s/\s\+$//e]]
-            vim.fn.winrestview(save_view)
+        if vim.g.disable_autoformat or vim.b[args.buf].disable_autoformat then
+            return
         end
+        local save_view = vim.fn.winsaveview()
+        vim.cmd [[keeppatterns %s/\s\+$//e]]
+        vim.fn.winrestview(save_view)
     end,
 })
 
@@ -43,7 +44,7 @@ vim.api.nvim_create_autocmd("FileType", {
     group = augroup,
     pattern = "netrw",
     callback = function()
-        local opts = { buffer = true, noremap = true, silent = true }
+        local opts = { buffer = true, silent = true }
         vim.keymap.set("n", "C", function()
             local count = vim.v.count
             if count > 0 then
