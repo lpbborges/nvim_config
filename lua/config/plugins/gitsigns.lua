@@ -43,7 +43,7 @@ return {
             end, { expr = true })
 
             map("n", "<leader>gb", gs.toggle_current_line_blame, { desc = "Toggle Git Blame" })
-            map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview Git Hunk" })
+            map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview Hunk" })
             map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage Hunk" })
             map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset Hunk" })
             map("v", "<leader>hs", function()
@@ -58,6 +58,7 @@ return {
             map("n", "<leader>hD", function()
                 gs.diffthis "~"
             end, { desc = "Diff This (HEAD)" })
+            map({ "o", "x" }, "ih", gs.select_hunk, { desc = "Select Hunk" })
         end,
     },
 }

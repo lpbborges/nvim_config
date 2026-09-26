@@ -15,6 +15,9 @@ return {
         { "<leader>fG", "<cmd>Telescope git_files<cr>", desc = "Git Files" },
         { "<leader>fm", "<cmd>Telescope marks<cr>", desc = "Find Marks" },
         { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
+        { "<leader>f.", "<cmd>Telescope resume<cr>", desc = "Resume Last Picker" },
+        { "<leader>fw", "<cmd>Telescope grep_string<cr>", mode = { "n", "x" }, desc = "Grep Word/Selection" },
+        { "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
         {
             "<leader>fg",
             function()
