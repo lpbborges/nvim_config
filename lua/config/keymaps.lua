@@ -87,7 +87,7 @@ keymap("i", "<C-c>", "<Esc>", opts)
 
 -- Visual Block --
 -- greatest remap ever
-keymap("x", "p", [["_dP]], { desc = "Paste without yanking" })
+keymap("x", "p", "P", { desc = "Paste without yanking" })
 keymap("x", "g/", "<Esc>/\\%V", { desc = "Search inside visual selection" })
 
 keymap("n", "<leader>gg", "<cmd>LazyGitCurrentFile<CR>", { desc = "LazyGit" })
@@ -107,7 +107,11 @@ end, { desc = "Toggle auto-format on save" })
 keymap("n", "<leader>u", "<cmd>packadd nvim.undotree | Undotree<cr>", { desc = "Toggle Undotree (Native)" })
 
 -- Native Treesitter Smart Selection (Neovim 0.12+)
+-- Only in normal buffers: quickfix, cmdwin and other special buffers rely on native <CR>
 keymap({ "n", "x" }, "<CR>", function()
+    if vim.bo.buftype ~= "" then
+        return vim.api.nvim_feedkeys(vim.keycode "<CR>", "n", false)
+    end
     vim.treesitter.select "parent"
 end, { desc = "Smart Selection (Treesitter Expand)" })
 keymap("x", "<BS>", function()

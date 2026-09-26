@@ -54,7 +54,12 @@ vim.api.nvim_create_autocmd("FileType", {
 -- pick up external edits (e.g. from an AI agent in another pane) on focus/buffer switch
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "TermLeave" }, {
     group = augroup,
-    command = "checktime",
+    callback = function()
+        -- :checktime is not allowed in the command-line window (E11)
+        if vim.fn.getcmdwintype() == "" then
+            vim.cmd.checktime()
+        end
+    end,
 })
 set.isfname:append "@-@"
 set.shortmess:append "c"

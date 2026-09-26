@@ -44,7 +44,6 @@ return {
             end,
             desc = "Grep (Git Root)",
         },
-        { "<leader>fg", desc = "Multi Grep" },
     },
     dependencies = {
         { "nvim-lua/plenary.nvim" },

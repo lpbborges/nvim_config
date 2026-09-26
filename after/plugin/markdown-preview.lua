@@ -75,7 +75,10 @@ vim.keymap.set("n", "<leader>mp", toggle_preview, {
     silent = true,
 })
 
+local augroup = vim.api.nvim_create_augroup("UserMarkdownPreview", { clear = true })
+
 vim.api.nvim_create_autocmd("BufWritePost", {
+    group = augroup,
     pattern = "*.md",
     callback = function()
         if preview_win and vim.api.nvim_win_is_valid(preview_win) then
@@ -87,6 +90,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 vim.api.nvim_create_autocmd("WinClosed", {
+    group = augroup,
     callback = function(args)
         if tonumber(args.match) == preview_win then
             close_preview()

@@ -84,7 +84,7 @@ return {
 
             -- LSP keymaps — buffer-local, set when a server attaches.
             -- K, grn, gra, grr, gri, grt, <C-s> (insert) come from Neovim's built-in
-            -- 0.11+ defaults; only the Telescope-picker-backed variants are added here.
+            -- 0.11+ defaults; only definition/declaration jumps are added here.
             vim.api.nvim_create_autocmd("LspAttach", {
                 callback = function(args)
                     local buf = args.buf
@@ -94,9 +94,6 @@ return {
 
                     map("n", "gd", vim.lsp.buf.definition, "Go to Definition")
                     map("n", "gD", vim.lsp.buf.declaration, "Go to Declaration")
-                    map("n", "gi", vim.lsp.buf.implementation, "Go to Implementation")
-                    map("n", "gt", vim.lsp.buf.type_definition, "Go to Type Definition")
-                    map("n", "<leader>vrr", vim.lsp.buf.references, "References")
                 end,
             })
 

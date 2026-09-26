@@ -12,7 +12,6 @@ return {
             { "<leader>h", group = "Git Hunk", icon = "󰊢 " },
             { "<leader>p", group = "Project", icon = "󰏖 " },
             { "<leader>t", group = "Test/Toggle", icon = " " },
-            { "<leader>v", group = "LSP/Diagnostics", icon = " " },
         },
     },
 }
