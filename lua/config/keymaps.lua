@@ -25,17 +25,6 @@ keymap("n", "<leader>co", "<cmd>copen<CR>", { desc = "Open quickfix" })
 keymap("n", "<leader>cc", "<cmd>cclose<CR>", { desc = "Close quickfix" })
 keymap("n", "<leader>cl", "<cmd>clist<CR>", { desc = "List quickfix" })
 
-keymap({ "n", "v" }, "<leader>cf", function()
-    require("conform").format({ async = true }, function(err)
-        if not err then
-            local mode = vim.api.nvim_get_mode().mode
-            if vim.startswith(string.lower(mode), "v") then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-            end
-        end
-    end)
-end, { desc = "Format Code" })
-
 -- Block to use arrow keys
 keymap("n", "<left>", '<cmd>echo "Use h to move!!"<CR>', opts)
 keymap("n", "<right>", '<cmd>echo "Use l to move!!"<CR>', opts)
@@ -89,8 +78,6 @@ keymap("i", "<C-c>", "<Esc>", opts)
 -- greatest remap ever
 keymap("x", "p", "P", { desc = "Paste without yanking" })
 keymap("x", "g/", "<Esc>/\\%V", { desc = "Search inside visual selection" })
-
-keymap("n", "<leader>gg", "<cmd>LazyGitCurrentFile<CR>", { desc = "LazyGit" })
 
 -- Toggle auto-format on save
 keymap("n", "<leader>tf", function()

@@ -4,7 +4,7 @@ local make_entry = require "telescope.make_entry"
 local conf = require("telescope.config").values
 local M = {}
 
-local live_multigrep = function(opts)
+function M.live_multigrep(opts)
     opts = opts or {}
     opts.cwd = opts.cwd or vim.uv.cwd()
     local finder = finders.new_async_job {
@@ -44,10 +44,6 @@ local live_multigrep = function(opts)
             sorter = require("telescope.sorters").empty(),
         })
         :find()
-end
-
-M.setup = function()
-    vim.keymap.set("n", "<leader>fg", live_multigrep, { desc = "Multi Grep" })
 end
 
 return M

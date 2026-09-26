@@ -1,3 +1,5 @@
+local M = {}
+
 local preview_buf = nil
 local preview_win = nil
 local source_buf = nil
@@ -47,9 +49,8 @@ local function refresh_preview(filepath)
     end)
 end
 
-local function toggle_preview()
-    local ft = vim.bo.filetype
-    if ft ~= "markdown" then
+function M.toggle()
+    if vim.bo.filetype ~= "markdown" then
         return
     end
 
@@ -69,11 +70,6 @@ local function toggle_preview()
         open_preview(filepath)
     end
 end
-
-vim.keymap.set("n", "<leader>mp", toggle_preview, {
-    desc = "Toggle markdown preview",
-    silent = true,
-})
 
 local augroup = vim.api.nvim_create_augroup("UserMarkdownPreview", { clear = true })
 
@@ -97,3 +93,5 @@ vim.api.nvim_create_autocmd("WinClosed", {
         end
     end,
 })
+
+return M

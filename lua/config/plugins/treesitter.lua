@@ -1,40 +1,32 @@
+-- Parsers to install. Highlighting/folds/indent are enabled for any filetype
+-- that has a parser available (installed here or bundled with Neovim).
 local ensure_installed = {
     "bash",
     "c",
+    "css",
+    "diff",
     "eex",
     "elixir",
+    "gitcommit",
     "heex",
     "html",
     "javascript",
+    "json",
     "lua",
     "markdown",
     "markdown_inline",
+    "python",
+    "query",
+    "regex",
+    "ruby",
+    "scss",
+    "svelte",
+    "toml",
     "tsx",
     "typescript",
-    "query",
-    "svelte",
-    "python",
-    "ruby",
-}
-
--- filetypes to start treesitter for (parser names above don't always match filetype names)
-local filetypes = {
-    "sh",
-    "c",
-    "elixir",
-    "heex",
-    "eelixir",
-    "html",
-    "javascript",
-    "lua",
-    "markdown",
-    "typescript",
-    "typescriptreact",
-    "javascriptreact",
-    "query",
-    "svelte",
-    "python",
-    "ruby",
+    "vim",
+    "vimdoc",
+    "yaml",
 }
 
 return {
@@ -47,12 +39,17 @@ return {
 
         vim.api.nvim_create_autocmd("FileType", {
             group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true }),
-            pattern = filetypes,
-            callback = function()
-                vim.treesitter.start()
-                vim.wo.foldmethod = "expr"
-                vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-                vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            callback = function(args)
+                if not pcall(vim.treesitter.start, args.buf) then
+                    return
+                end
+                vim.wo[0][0].foldmethod = "expr"
+                vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                -- keep the ftplugin's indentexpr when there is no treesitter indent query
+                local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+                if lang and vim.treesitter.query.get(lang, "indents") then
+                    vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end
             end,
         })
     end,
